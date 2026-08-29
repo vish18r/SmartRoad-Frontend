@@ -1,0 +1,2 @@
+import { PendingPage } from "@/components/common/pending-page";
+export default function WorkerPerformancePage() { return <PendingPage title="Worker performance" description="Review attendance, productivity, overtime, payments, and assigned projects with role-aware visibility." capabilities={["Configurable performance metrics", "Productivity and attendance", "Sensitive rankings restricted by role"]} />; }

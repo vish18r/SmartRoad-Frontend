@@ -1,0 +1,2 @@
+import { PendingPage } from "@/components/common/pending-page";
+export default function OwnerDashboardPage() { return <PendingPage title="Owner dashboard" description="Executive visibility into business value, contracts, revenue, expenses, profit, payments, deadlines, and project health." capabilities={["Owner and site views", "Business and project health", "Revenue, cost, and outstanding payments"]} />; }

@@ -1,0 +1,2 @@
+import { PendingPage } from "@/components/common/pending-page";
+export default function MaterialDeliveryPage() { return <PendingPage title="Material delivery verification" description="Compare ordered, received, and damaged quantities with supplier, vehicle, invoice, photos, and receiver signature." capabilities={["Quantity variance", "Invoice and delivery date", "Receiver signature and photos"]} />; }

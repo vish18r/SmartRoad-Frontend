@@ -1,0 +1,2 @@
+interface CardProps { title: string; value: string; detail?: string; }
+export function Card({ title, value, detail }: CardProps) { return <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"><p className="text-sm font-medium text-slate-500">{title}</p><p className="mt-2 text-3xl font-bold text-slate-900">{value}</p>{detail && <p className="mt-2 text-sm text-emerald-600">{detail}</p>}</article>; }

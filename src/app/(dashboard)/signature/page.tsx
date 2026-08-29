@@ -1,0 +1,2 @@
+import { SignaturePad } from "@/components/ui/signature-pad";
+export default function SignaturePage() { return <div><p className="text-sm font-medium text-orange-600">Approvals</p><h1 className="mt-1 text-3xl font-bold">Digital signature</h1><p className="mt-1 text-sm text-slate-500">Capture a signature preview for payments, deliveries, progress, reports, and completion approvals.</p><div className="mt-7"><SignaturePad /></div></div>; }

@@ -1,0 +1,2 @@
+import { PendingPage } from "@/components/common/pending-page";
+export default function SiteDashboardPage() { return <PendingPage title="Site dashboard" description="A mobile-first supervisor view of today's work, attendance, machines, materials, issues, photos, and tasks." capabilities={["Today's work and completion", "Workers, machines, and materials", "Issues, photos, and pending tasks"]} />; }

@@ -1,0 +1,2 @@
+import { LocationCheck } from "@/components/common/location-check";
+export default function GeofencePage() { return <div><p className="text-sm font-medium text-orange-600">Field operations</p><h1 className="mt-1 text-3xl font-bold">Location verification</h1><p className="mt-1 text-sm text-slate-500">Prepare location-aware site attendance without recording attendance until the backend supports it.</p><div className="mt-7"><LocationCheck /></div></div>; }

@@ -1,0 +1,4 @@
+"use client";
+import { useState } from "react";
+import { EmptyState } from "@/components/common/states";
+export default function NotificationsPage() { const [read, setRead] = useState(false); return <div><div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-sm font-medium text-orange-600">Workspace</p><h1 className="mt-1 text-3xl font-bold">Notifications</h1><p className="mt-1 text-sm text-slate-500">Operational alerts and account activity.</p></div><button type="button" onClick={() => setRead(true)} disabled={read} className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold disabled:opacity-50">Mark all as read</button></div><div className="mt-7">{read ? <EmptyState title="All caught up" description="Unread notifications from the backend will appear here." /> : <EmptyState title="No notifications yet" description="Notification APIs are not available in the current backend." />}</div></div>; }

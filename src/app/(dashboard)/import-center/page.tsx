@@ -1,0 +1,2 @@
+import { PendingPage } from "@/components/common/pending-page";
+export default function ImportCenterPage() { return <PendingPage title="Data import" description="Prepare safe CSV and Excel imports with preview, validation errors, explicit confirmation, and success summaries." capabilities={["Workers, materials, projects, suppliers, expenses", "Preview and validation", "Explicit import confirmation"]} />; }

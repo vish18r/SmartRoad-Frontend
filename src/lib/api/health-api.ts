@@ -1,10 +1,10 @@
 import { apiClient } from "./api-client";
 import type { ApiResponse } from "@/types/api";
+import type { HealthStatusResponse } from "@/types/health";
 
-export interface HealthStatus {
-  status: string;
-}
+export type HealthStatus = HealthStatusResponse;
 
 export const healthApi = {
-  getStatus: (): Promise<ApiResponse<HealthStatus>> => apiClient.get<HealthStatus>("/health"),
+  getStatus: (): Promise<ApiResponse<HealthStatusResponse>> =>
+    apiClient.get<HealthStatusResponse>("/health"),
 };

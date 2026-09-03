@@ -1,7 +1,8 @@
-export type ProjectStatus = "ACTIVE" | "COMPLETED" | "ON_HOLD" | "CANCELLED";
+import type { BaseEntity } from '@/types/common';
 
-export interface ProjectResponse {
-  id: string;
+export type ProjectStatus = 'DRAFT' | 'ACTIVE' | 'COMPLETED' | 'ARCHIVED' | 'CANCELLED' | 'ON_HOLD';
+
+export interface ProjectResponse extends BaseEntity {
   organizationId: string;
   clientId?: string;
   code?: string;
@@ -10,31 +11,38 @@ export interface ProjectResponse {
   location?: string;
   status: ProjectStatus;
   budget: number;
-  actualCost: number;
-  progress: number;
+  actualCost?: number;
+  progress?: number;
   startDate?: string;
   endDate?: string;
   archived?: boolean;
 }
 
 export interface ProjectCreateRequest {
-  name: string;
+  organizationId: string;
+  clientId?: string;
   code?: string;
+  name: string;
   description?: string;
   location?: string;
   status: ProjectStatus;
   budget: number;
-  clientId?: string;
+  progress?: number;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface ProjectUpdateRequest {
-  name?: string;
+  clientId?: string;
   code?: string;
+  name?: string;
   description?: string;
   location?: string;
   status?: ProjectStatus;
   budget?: number;
-  clientId?: string;
+  progress?: number;
+  startDate?: string;
+  endDate?: string;
 }
 
 export type Project = ProjectResponse;

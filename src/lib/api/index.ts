@@ -9,6 +9,9 @@ export { roadsApi } from "./roads-api";
 export { boqApi } from "./boq-api";
 export { workersApi } from "./workers-api";
 export { dashboardApi } from "./dashboard-api";
+export { materialApi } from "./material-api";
+export { contractApi } from "./contract-api";
+export { workerApi } from "./worker-api";
 
 // Export types
 export type { ApiResponse, ApiError } from "@/types/api";

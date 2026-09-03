@@ -40,13 +40,15 @@ export interface AuthResponse extends TokenResponse {
 }
 
 export interface VerifyOtpRequest {
-  email: string;
+  email?: string;
+  phoneNumber?: string;
   otp: string;
   flow: OtpFlow;
 }
 
 export interface ResendOtpRequest {
-  email: string;
+  email?: string;
+  phoneNumber?: string;
   flow: OtpFlow;
 }
 

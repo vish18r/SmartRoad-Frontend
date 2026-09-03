@@ -21,9 +21,15 @@ async function readPayload(response: Response): Promise<unknown> {
 
 function toError(status: number, payload: unknown): ApiError {
   const response = payload as Partial<ApiResponse<Record<string, string>>>;
+  const rawMessage = response.message || (status === 0 ? "Unable to reach the server. Please try again." : "Request failed.");
+
+  // Hide technical database/server errors from users
+  const isTechnicalError = rawMessage.includes("transaction") || rawMessage.includes("database") || rawMessage.includes("SQL") || rawMessage.includes("Hibernate");
+  const userMessage = isTechnicalError ? "Something went wrong. Please try again." : rawMessage;
+
   return {
     status,
-    message: response.message || (status === 0 ? "Unable to reach the server. Please try again." : "Request failed."),
+    message: userMessage,
     errors: typeof response.data === "object" && response.data !== null ? response.data : undefined,
   };
 }

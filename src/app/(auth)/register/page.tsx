@@ -65,7 +65,7 @@ export default function RegisterPage() {
       });
 
       router.push(
-        `/verify-otp?phoneNumber=${encodeURIComponent(cleanPhoneNumber)}&flow=SIGNUP_VERIFICATION`
+        `/verify-otp?email=${encodeURIComponent(form.email.trim())}&flow=SIGNUP_VERIFICATION`
       );
     } catch (reason) {
       setError((reason as ApiError).message || "Unable to create the account.");

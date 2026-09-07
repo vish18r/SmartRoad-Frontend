@@ -31,7 +31,6 @@ function VerifyOtpPage() {
 
   const otp = digits.join("");
   const identifier = email || phoneNumber;
-  const isPhone = !!phoneNumber;
 
   const setDigit = (index: number, value: string) => {
     const values = [...digits];
@@ -101,8 +100,8 @@ function VerifyOtpPage() {
 
   return (
     <AuthShell
-      title={isPhone ? "Verify your phone" : "Verify your email"}
-      subtitle={`Enter the code sent to ${identifier}.`}
+      title="Verify your email"
+      subtitle={`Enter the 6-digit code sent to ${identifier}.`}
     >
       <form onSubmit={submit} className="mt-6 space-y-5">
         <div className="flex justify-between gap-2">

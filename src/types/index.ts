@@ -9,3 +9,4 @@ export * from "./boq";
 export * from "./worker";
 export * from "./health";
 export * from "./dashboard";
+export * from "./business-profile";

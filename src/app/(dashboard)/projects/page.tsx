@@ -88,11 +88,11 @@ export default function ProjectsPage() {
 
   if (!organizationId) {
     return (
-      <div className=”text-center py-12”>
-        <p className=”text-gray-600 mb-4”>Please select an organization first</p>
+      <div className='text-center py-12'>
+        <p className='text-gray-600 mb-4'>Please select an organization first</p>
         <Link
-          href=”/organizations”
-          className=”inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700”
+          href='/organizations'
+          className='inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700'
         >
           Go to Organizations
         </Link>

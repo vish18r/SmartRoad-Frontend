@@ -101,34 +101,34 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className=”space-y-6”>
+    <div className="space-y-6">
       {/* Header */}
-      <div className=”flex items-center justify-between”>
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className=”text-3xl font-bold text-gray-900”>Projects</h1>
-          <p className=”mt-2 text-sm text-gray-600”>
+          <h1 className="text-3xl font-bold text-gray-900">Projects</h1>
+          <p className="mt-2 text-sm text-gray-600">
             Browse, filter, and manage all road construction projects
           </p>
         </div>
         <Link
           href={`/projects/new?organizationId=${organizationId}`}
-          className=”inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700”
+          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
         >
           + New Project
         </Link>
       </div>
 
       {/* Filters */}
-      <Form onSubmit={handleSearch} className=”bg-white rounded-lg shadow-sm p-6”>
-        <div className=”grid grid-cols-1 md:grid-cols-3 gap-4”>
+      <Form onSubmit={handleSearch} className="bg-white rounded-lg shadow-sm p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <FormInput
-            label=”Search”
-            placeholder=”Search by name, code, or location”
+            label="Search"
+            placeholder="Search by name, code, or location"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <FormSelect
-            label=”Status”
+            label="Status"
             options={[
               { label: 'All', value: '' },
               { label: 'Draft', value: 'DRAFT' },
@@ -141,94 +141,94 @@ export default function ProjectsPage() {
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           />
-          <div className=”flex items-end”>
-            <FormSubmitButton className=”w-full”>Search</FormSubmitButton>
+          <div className="flex items-end">
+            <FormSubmitButton className="w-full">Search</FormSubmitButton>
           </div>
         </div>
       </Form>
 
       {/* Results Info */}
       {!loading && (
-        <div className=”text-sm text-gray-600”>
+        <div className="text-sm text-gray-600">
           Showing{' '}
-          <span className=”font-medium”>
+          <span className="font-medium">
             {projects.length === 0
               ? 0
               : (pagination.page - 1) * pagination.limit + 1}
             -
             {(pagination.page - 1) * pagination.limit + projects.length}
           </span>{' '}
-          of <span className=”font-medium”>{pagination.totalRecords}</span> projects
+          of <span className="font-medium">{pagination.totalRecords}</span> projects
         </div>
       )}
 
       {/* Table */}
-      <div className=”bg-white rounded-lg shadow-sm overflow-hidden”>
+      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
         {loading ? (
-          <div className=”p-8 text-center text-gray-500”>
-            <div className=”inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600”></div>
-            <p className=”mt-2”>Loading projects...</p>
+          <div className="p-8 text-center text-gray-500">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <p className="mt-2">Loading projects...</p>
           </div>
         ) : error ? (
-          <div className=”p-8 text-center”>
-            <p className=”text-red-600 mb-4”>{error.message}</p>
+          <div className="p-8 text-center">
+            <p className="text-red-600 mb-4">{error.message}</p>
             <button
               onClick={() => refetch()}
-              className=”px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700”
+              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700"
             >
               Try Again
             </button>
           </div>
         ) : projects.length === 0 ? (
-          <div className=”p-8 text-center text-gray-500”>
+          <div className="p-8 text-center text-gray-500">
             <p>No projects found. Create one to get started.</p>
           </div>
         ) : (
-          <table className=”w-full”>
-            <thead className=”bg-gray-50 border-b border-gray-200”>
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className=”px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider”>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Code
                 </th>
-                <th className=”px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider”>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Name
                 </th>
-                <th className=”px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider”>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Location
                 </th>
-                <th className=”px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider”>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Budget
                 </th>
-                <th className=”px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider”>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Progress
                 </th>
-                <th className=”px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider”>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
                 </th>
-                <th className=”px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider”>
+                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className=”divide-y divide-gray-200”>
+            <tbody className="divide-y divide-gray-200">
               {projects.map((project) => (
-                <tr key={project.id} className=”hover:bg-gray-50”>
-                  <td className=”px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900”>
+                <tr key={project.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {project.code || '-'}
                   </td>
-                  <td className=”px-6 py-4 whitespace-nowrap text-sm text-gray-600”>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                     {project.name}
                   </td>
-                  <td className=”px-6 py-4 whitespace-nowrap text-sm text-gray-600”>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                     {project.location || '-'}
                   </td>
-                  <td className=”px-6 py-4 whitespace-nowrap text-sm text-gray-900”>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     ₹{project.budget.toFixed(2)}
                   </td>
-                  <td className=”px-6 py-4 whitespace-nowrap text-sm text-gray-900”>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {project.progress || 0}%
                   </td>
-                  <td className=”px-6 py-4 whitespace-nowrap text-sm”>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         project.status === 'ACTIVE'
@@ -245,22 +245,22 @@ export default function ProjectsPage() {
                       {project.status.replace('_', ' ')}
                     </span>
                   </td>
-                  <td className=”px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2”>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                     <Link
                       href={`/projects/${project.id}`}
-                      className=”text-blue-600 hover:text-blue-900”
+                      className="text-blue-600 hover:text-blue-900"
                     >
                       View
                     </Link>
                     <Link
                       href={`/projects/${project.id}/edit`}
-                      className=”text-blue-600 hover:text-blue-900”
+                      className="text-blue-600 hover:text-blue-900"
                     >
                       Edit
                     </Link>
                     <button
                       onClick={() => handleDelete(project.id)}
-                      className=”text-red-600 hover:text-red-900”
+                      className="text-red-600 hover:text-red-900"
                     >
                       Delete
                     </button>
@@ -274,22 +274,22 @@ export default function ProjectsPage() {
 
       {/* Pagination */}
       {pagination.totalPages > 1 && (
-        <div className=”flex items-center justify-between bg-white rounded-lg shadow-sm p-6”>
-          <div className=”text-sm text-gray-600”>
+        <div className="flex items-center justify-between bg-white rounded-lg shadow-sm p-6">
+          <div className="text-sm text-gray-600">
             Page {pagination.page} of {pagination.totalPages}
           </div>
-          <div className=”space-x-2”>
+          <div className="space-x-2">
             <button
               onClick={pagination.previousPage}
               disabled={!pagination.hasPreviousPage}
-              className=”px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed”
+              className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </button>
             <button
               onClick={pagination.nextPage}
               disabled={!pagination.hasNextPage}
-              className=”px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed”
+              className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </button>

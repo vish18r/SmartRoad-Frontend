@@ -27,3 +27,33 @@ export interface DashboardData {
 }
 
 export type Dashboard = DashboardData;
+
+export interface OwnerDashboard {
+  portfolio: {
+    totalProjects: number;
+    activeProjects: number;
+    onHoldProjects: number;
+    completedProjects: number;
+    averageProgress: number;
+  };
+  contracts: {
+    totalContracts: number;
+    activeContracts: number;
+    totalContractValue: number;
+    activeContractValue: number;
+  };
+  financials: {
+    totalBudget: number;
+    totalActualCost: number;
+    budgetVariance: number;
+    overBudgetProjects: number;
+    committedProcurement: number;
+    procurementAwaitingDelivery: number;
+  };
+  deadlines: {
+    overdueProjects: number;
+    projectsDueIn30Days: number;
+    contractsExpiringIn30Days: number;
+    deliveriesOverdue: number;
+  };
+}

@@ -1,5 +1,4 @@
 import { apiClient } from "./api-client";
-import type { ApiResponse } from "@/types/api";
 import type {
   OrganizationResponse,
   OrganizationCreateRequest,
@@ -9,33 +8,33 @@ import type {
 } from "@/types/organization";
 
 export const organizationsApi = {
-  create: (body: OrganizationCreateRequest): Promise<ApiResponse<OrganizationResponse>> =>
+  create: (body: OrganizationCreateRequest): Promise<OrganizationResponse> =>
     apiClient.post<OrganizationResponse>("/organizations", body),
 
-  list: (): Promise<ApiResponse<OrganizationResponse[]>> =>
+  list: (): Promise<OrganizationResponse[]> =>
     apiClient.get<OrganizationResponse[]>("/organizations"),
 
-  getMyOrganizations: (): Promise<ApiResponse<OrganizationResponse[]>> =>
+  getMyOrganizations: (): Promise<OrganizationResponse[]> =>
     apiClient.get<OrganizationResponse[]>("/organizations/my-organizations"),
 
-  getById: (id: string): Promise<ApiResponse<OrganizationResponse>> =>
+  getById: (id: string): Promise<OrganizationResponse> =>
     apiClient.get<OrganizationResponse>(`/organizations/${id}`),
 
-  update: (id: string, body: OrganizationUpdateRequest): Promise<ApiResponse<OrganizationResponse>> =>
+  update: (id: string, body: OrganizationUpdateRequest): Promise<OrganizationResponse> =>
     apiClient.put<OrganizationResponse>(`/organizations/${id}`, body),
 
-  delete: (id: string): Promise<ApiResponse<null>> =>
+  delete: (id: string): Promise<null> =>
     apiClient.delete<null>(`/organizations/${id}`),
 
   addMember: (
     organizationId: string,
     body: OrganizationMemberCreateRequest
-  ): Promise<ApiResponse<OrganizationMemberResponse>> =>
+  ): Promise<OrganizationMemberResponse> =>
     apiClient.post<OrganizationMemberResponse>(`/organizations/${organizationId}/members`, body),
 
-  listMembers: (organizationId: string): Promise<ApiResponse<OrganizationMemberResponse[]>> =>
+  listMembers: (organizationId: string): Promise<OrganizationMemberResponse[]> =>
     apiClient.get<OrganizationMemberResponse[]>(`/organizations/${organizationId}/members`),
 
-  removeMember: (organizationId: string, memberId: string): Promise<ApiResponse<null>> =>
+  removeMember: (organizationId: string, memberId: string): Promise<null> =>
     apiClient.delete<null>(`/organizations/${organizationId}/members/${memberId}`),
 };

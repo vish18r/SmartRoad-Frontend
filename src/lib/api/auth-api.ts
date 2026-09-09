@@ -1,5 +1,4 @@
 import { apiClient } from "./api-client";
-import type { ApiResponse } from "@/types/api";
 import type { AuthResponse, ChangePasswordRequest, ForgotPasswordRequest, LoginRequest, ResendOtpRequest, ResetPasswordRequest, SignupRequest, TokenResponse, User, VerifyOtpRequest } from "@/types/auth";
 
 export const authApi = {
@@ -15,4 +14,4 @@ export const authApi = {
   getCurrentUser: () => apiClient.get<User>("/auth/me"),
   refreshToken: (refreshToken: string) => apiClient.post<TokenResponse>("/auth/refresh", { refreshToken }),
 };
-export type AuthApiResult<T> = Promise<ApiResponse<T>>;
+export type AuthApiResult<T> = Promise<T>;

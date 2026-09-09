@@ -40,14 +40,17 @@ async function refreshAccessToken(): Promise<boolean> {
   if (!baseUrl || !refreshToken) return false;
   try {
     const response = await fetch(`${baseUrl}/auth/refresh`, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ refreshToken }) });
-    const payload = await readPayload(response) as ApiResponse<{ accessToken: string }>;
-    if (!response.ok || !payload.success || !payload.data?.accessToken) return false;
-    tokenStorage.setAccessToken(payload.data.accessToken);
+    if (!response.ok) return false;
+    const payload = await readPayload(response) as { accessToken?: string };
+    if (!payload.accessToken) return false;
+    tokenStorage.setAccessToken(payload.accessToken);
     return true;
   } catch { return false; }
 }
 
-async function request<T>(method: HttpMethod, path: string, options: RequestOptions = {}, retried = false): Promise<ApiResponse<T>> {
+// Success responses are returned by the backend as the raw DTO body (never enveloped);
+// only error responses are wrapped as { success, message, data } by GlobalExceptionHandler.
+async function request<T>(method: HttpMethod, path: string, options: RequestOptions = {}, retried = false): Promise<T> {
   const baseUrl = getBaseUrl();
   if (!baseUrl) throw { status: 0, message: "NEXT_PUBLIC_API_BASE_URL is not configured." } satisfies ApiError;
   const { body, headers, ...init } = options;
@@ -62,7 +65,7 @@ async function request<T>(method: HttpMethod, path: string, options: RequestOpti
       if (typeof window !== "undefined") window.dispatchEvent(new Event("smartroad:unauthorized"));
     }
     if (!response.ok) throw toError(response.status, payload);
-    return payload as ApiResponse<T>;
+    return payload as T;
   } catch (error) {
     if (typeof error === "object" && error !== null && "status" in error) throw error;
     throw { status: 0, message: "Unable to reach the server. Please check your connection." } satisfies ApiError;

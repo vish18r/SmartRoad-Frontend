@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { ApiResponse, ApiError } from '@/types/api';
+import type { ApiError } from '@/types/api';
 
 interface UseApiOptions {
   skip?: boolean;
@@ -17,7 +17,7 @@ interface UseApiResult<T> {
 }
 
 export function useApi<T>(
-  apiCall: () => Promise<ApiResponse<T>>,
+  apiCall: () => Promise<T>,
   options: UseApiOptions = {}
 ): UseApiResult<T> {
   const [data, setData] = useState<T | null>(null);
@@ -34,8 +34,8 @@ export function useApi<T>(
     try {
       const response = await apiCall();
       if (isMounted.current) {
-        setData(response.data);
-        options.onSuccess?.(response.data);
+        setData(response);
+        options.onSuccess?.(response);
       }
     } catch (err) {
       if (isMounted.current) {
@@ -78,7 +78,7 @@ interface UseMutationResult<T> {
 }
 
 export function useMutation<T>(
-  apiCall: (payload?: any) => Promise<ApiResponse<T>>,
+  apiCall: (payload?: any) => Promise<T>,
   options: UseMutationOptions = {}
 ): UseMutationResult<T> {
   const [data, setData] = useState<T | null>(null);
@@ -94,10 +94,10 @@ export function useMutation<T>(
       try {
         const response = await apiCall(payload);
         if (isMounted.current) {
-          setData(response.data);
-          options.onSuccess?.(response.data);
+          setData(response);
+          options.onSuccess?.(response);
         }
-        return response.data;
+        return response;
       } catch (err) {
         const apiError = err as ApiError;
         if (isMounted.current) {

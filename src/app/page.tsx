@@ -25,7 +25,7 @@ export default function HomePage() {
   const [health, setHealth] = useState<HealthStatus | null>(null);
   const [healthError, setHealthError] = useState("");
   const [now, setNow] = useState<Date | null>(null);
-  useEffect(() => { setNow(new Date()); void healthApi.getStatus().then((response) => setHealth(response.data)).catch((reason: { message?: string }) => setHealthError(reason.message || "Backend is unavailable.")); }, []);
+  useEffect(() => { setNow(new Date()); void healthApi.getStatus().then((status) => setHealth(status)).catch((reason: { message?: string }) => setHealthError(reason.message || "Backend is unavailable.")); }, []);
   if (authLoading) return <main className="grid min-h-screen place-items-center"><Loading /></main>;
   const role = user?.role || "CONTRACTOR";
   const actions = actionByRole[role] || actionByRole.CONTRACTOR;

@@ -15,7 +15,7 @@ export default function DashboardPage() {
 	useEffect(() => {
 		let active = true;
 		void healthApi.getStatus()
-			.then((response) => { if (active) setHealth(response.data); })
+			.then((status) => { if (active) setHealth(status); })
 			.catch((reason: ApiError) => { if (active) setError(reason.message); });
 		return () => { active = false; };
 	}, []);

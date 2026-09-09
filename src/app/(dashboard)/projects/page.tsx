@@ -62,7 +62,7 @@ export default function ProjectsPage() {
     }
   );
 
-  const projects = Array.isArray(response) ? response : response?.data || [];
+  const projects = response || [];
 
   const handleSearch = useCallback(
     async (e: React.FormEvent) => {

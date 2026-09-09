@@ -1,27 +1,26 @@
 import { apiClient } from "./api-client";
-import type { ApiResponse } from "@/types/api";
 import type { ProjectResponse, ProjectCreateRequest, ProjectUpdateRequest } from "@/types/project";
 
 export const projectApi = {
-  create: (body: ProjectCreateRequest): Promise<ApiResponse<ProjectResponse>> =>
+  create: (body: ProjectCreateRequest): Promise<ProjectResponse> =>
     apiClient.post<ProjectResponse>("/projects", body),
 
-  list: (organizationId: string): Promise<ApiResponse<ProjectResponse[]>> =>
+  list: (organizationId: string): Promise<ProjectResponse[]> =>
     apiClient.get<ProjectResponse[]>(`/projects?organizationId=${organizationId}`),
 
-  getById: (id: string): Promise<ApiResponse<ProjectResponse>> =>
+  getById: (id: string): Promise<ProjectResponse> =>
     apiClient.get<ProjectResponse>(`/projects/${id}`),
 
-  update: (id: string, body: ProjectUpdateRequest): Promise<ApiResponse<ProjectResponse>> =>
+  update: (id: string, body: ProjectUpdateRequest): Promise<ProjectResponse> =>
     apiClient.put<ProjectResponse>(`/projects/${id}`, body),
 
-  delete: (id: string): Promise<ApiResponse<null>> =>
+  delete: (id: string): Promise<null> =>
     apiClient.delete<null>(`/projects/${id}`),
 
   // Legacy method names for backward compatibility
-  getList: (organizationId: string): Promise<ApiResponse<ProjectResponse[]>> =>
+  getList: (organizationId: string): Promise<ProjectResponse[]> =>
     projectApi.list(organizationId),
 
-  remove: (id: string): Promise<ApiResponse<null>> =>
+  remove: (id: string): Promise<null> =>
     projectApi.delete(id),
 };

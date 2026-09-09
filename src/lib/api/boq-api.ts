@@ -1,5 +1,4 @@
 import { apiClient } from "./api-client";
-import type { ApiResponse } from "@/types/api";
 import type {
   BoqResponse,
   BoqCreateRequest,
@@ -10,27 +9,27 @@ import type {
 } from "@/types/boq";
 
 export const boqApi = {
-  create: (projectId: string, body: BoqCreateRequest): Promise<ApiResponse<BoqResponse>> =>
+  create: (projectId: string, body: BoqCreateRequest): Promise<BoqResponse> =>
     apiClient.post<BoqResponse>(`/projects/${projectId}/boq`, body),
 
-  listByProject: (projectId: string): Promise<ApiResponse<BoqResponse[]>> =>
+  listByProject: (projectId: string): Promise<BoqResponse[]> =>
     apiClient.get<BoqResponse[]>(`/projects/${projectId}/boq`),
 
-  update: (boqId: string, body: BoqUpdateRequest): Promise<ApiResponse<BoqResponse>> =>
+  update: (boqId: string, body: BoqUpdateRequest): Promise<BoqResponse> =>
     apiClient.put<BoqResponse>(`/boq/${boqId}`, body),
 
-  delete: (boqId: string): Promise<ApiResponse<null>> =>
+  delete: (boqId: string): Promise<null> =>
     apiClient.delete<null>(`/boq/${boqId}`),
 
-  addItem: (boqId: string, body: BoqItemCreateRequest): Promise<ApiResponse<BoqItemResponse>> =>
+  addItem: (boqId: string, body: BoqItemCreateRequest): Promise<BoqItemResponse> =>
     apiClient.post<BoqItemResponse>(`/boq/${boqId}/items`, body),
 
-  listItems: (boqId: string): Promise<ApiResponse<BoqItemResponse[]>> =>
+  listItems: (boqId: string): Promise<BoqItemResponse[]> =>
     apiClient.get<BoqItemResponse[]>(`/boq/${boqId}/items`),
 
-  updateItem: (boqId: string, itemId: string, body: BoqItemUpdateRequest): Promise<ApiResponse<BoqItemResponse>> =>
+  updateItem: (boqId: string, itemId: string, body: BoqItemUpdateRequest): Promise<BoqItemResponse> =>
     apiClient.put<BoqItemResponse>(`/boq/${boqId}/items/${itemId}`, body),
 
-  deleteItem: (boqId: string, itemId: string): Promise<ApiResponse<null>> =>
+  deleteItem: (boqId: string, itemId: string): Promise<null> =>
     apiClient.delete<null>(`/boq/${boqId}/items/${itemId}`),
 };

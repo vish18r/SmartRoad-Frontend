@@ -1,5 +1,5 @@
 import { apiClient } from './api-client';
-import type { ApiResponse, ApiListResponse } from '@/types/api';
+import type { ApiListResponse } from '@/types/common';
 import type {
   MaterialResponse,
   MaterialCreateRequest,
@@ -10,16 +10,18 @@ import type {
 
 export const materialApi = {
   // CRUD Operations
-  create: (body: MaterialCreateRequest): Promise<ApiResponse<MaterialResponse>> =>
+  create: (body: MaterialCreateRequest): Promise<MaterialResponse> =>
     apiClient.post<MaterialResponse>('/materials', body),
 
+  // Note: the backend's /materials list endpoint (MaterialController.listMaterials) returns
+  // a flat array — it does not implement pagination despite the x-page/x-limit headers sent here.
   list: (
     projectId?: string,
     page: number = 1,
     limit: number = 20,
     filters?: Record<string, any>
-  ): Promise<ApiResponse<ApiListResponse<MaterialResponse>>> =>
-    apiClient.get<ApiListResponse<MaterialResponse>>('/materials', {
+  ): Promise<MaterialResponse[]> =>
+    apiClient.get<MaterialResponse[]>('/materials', {
       headers: {
         'x-page': String(page),
         'x-limit': String(limit),
@@ -33,16 +35,16 @@ export const materialApi = {
       },
     }),
 
-  getById: (id: string): Promise<ApiResponse<MaterialResponse>> =>
+  getById: (id: string): Promise<MaterialResponse> =>
     apiClient.get<MaterialResponse>(`/materials/${id}`),
 
   update: (
     id: string,
     body: MaterialUpdateRequest
-  ): Promise<ApiResponse<MaterialResponse>> =>
+  ): Promise<MaterialResponse> =>
     apiClient.put<MaterialResponse>(`/materials/${id}`, body),
 
-  delete: (id: string): Promise<ApiResponse<null>> =>
+  delete: (id: string): Promise<null> =>
     apiClient.delete<null>(`/materials/${id}`),
 
   // Stock Management
@@ -50,7 +52,7 @@ export const materialApi = {
     materialId: string,
     page: number = 1,
     limit: number = 50
-  ): Promise<ApiResponse<ApiListResponse<StockLedgerEntry>>> =>
+  ): Promise<ApiListResponse<StockLedgerEntry>> =>
     apiClient.get<ApiListResponse<StockLedgerEntry>>(
       `/materials/${materialId}/stock-ledger`,
       {
@@ -63,7 +65,7 @@ export const materialApi = {
 
   transfer: (
     body: MaterialTransferRequest
-  ): Promise<ApiResponse<MaterialResponse>> =>
+  ): Promise<MaterialResponse> =>
     apiClient.post<MaterialResponse>('/materials/transfer', body),
 
   // Search & Filter
@@ -71,7 +73,7 @@ export const materialApi = {
     query: string,
     projectId?: string,
     limit: number = 20
-  ): Promise<ApiResponse<MaterialResponse[]>> =>
+  ): Promise<MaterialResponse[]> =>
     apiClient.get<MaterialResponse[]>('/materials/search', {
       headers: {
         'x-search': query,
@@ -83,7 +85,7 @@ export const materialApi = {
   // Low Stock Alert
   getLowStockItems: (
     projectId?: string
-  ): Promise<ApiResponse<MaterialResponse[]>> =>
+  ): Promise<MaterialResponse[]> =>
     apiClient.get<MaterialResponse[]>('/materials/low-stock', {
       headers: {
         ...(projectId && { 'x-project-id': projectId }),
@@ -91,9 +93,9 @@ export const materialApi = {
     }),
 
   // Legacy method names for backward compatibility
-  getList: (projectId?: string): Promise<ApiResponse<MaterialResponse[]>> =>
+  getList: (projectId?: string): Promise<MaterialResponse[]> =>
     materialApi.list(projectId, 1, 1000),
 
-  remove: (id: string): Promise<ApiResponse<null>> =>
+  remove: (id: string): Promise<null> =>
     materialApi.delete(id),
 };

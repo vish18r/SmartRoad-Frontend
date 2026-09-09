@@ -41,18 +41,13 @@ export default function MaterialsPage() {
         search: searchQuery || undefined,
       }),
     {
-      onSuccess: (data) => {
-        if ('pagination' in data) {
-          pagination.setMeta(data.pagination);
-        }
-      },
       onError: (err) => {
         toast.error(err.message || 'Failed to load materials');
       },
     }
   );
 
-  const materials = response?.data || [];
+  const materials = response || [];
 
   const handleSearch = useCallback(
     async (e: React.FormEvent) => {

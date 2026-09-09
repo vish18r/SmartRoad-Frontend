@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { healthApi, type HealthStatus } from "@/lib/api/health-api";
 import { useWorkspace } from "@/components/workspace/workspace-context";
 import { BrandLogo } from "@/components/branding/brand-logo";
+import { PublicLandingPage } from "@/components/landing/public-landing-page";
 
 const actionByRole: Record<string, Array<[string, string]>> = {
   ADMIN: [["New project", "/projects"], ["Add expense", "/expenses"], ["Review approvals", "/approval-inbox"], ["Build report", "/report-builder"]],
@@ -27,6 +28,7 @@ export default function HomePage() {
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => { setNow(new Date()); void healthApi.getStatus().then((status) => setHealth(status)).catch((reason: { message?: string }) => setHealthError(reason.message || "Backend is unavailable.")); }, []);
   if (authLoading) return <main className="grid min-h-screen place-items-center"><Loading /></main>;
+  if (!user) return <PublicLandingPage />;
   const role = user?.role || "CONTRACTOR";
   const actions = actionByRole[role] || actionByRole.CONTRACTOR;
   const date = now?.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" }) || "Preparing today's command center...";

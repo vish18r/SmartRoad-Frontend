@@ -59,13 +59,16 @@ export enum RoleEnum {
   VIEWER = 'VIEWER',
 }
 
+// Audit fields every backend response DTO carries. Names match the wire format the
+// API actually emits: createdDate/modifiedDate/modifiedBy, not createdAt/updatedAt.
+// Domain status is declared on each domain's own type — every domain has its own
+// status vocabulary, and declaring `status` here collided with all of them.
 export interface BaseEntity {
   id: string;
-  createdAt: string;
-  updatedAt: string;
   createdBy?: string;
-  updatedBy?: string;
-  status?: StatusEnum;
+  modifiedBy?: string;
+  createdDate?: string;
+  modifiedDate?: string;
 }
 
 export interface NamedEntity extends BaseEntity {

@@ -1,49 +1,46 @@
 import type { BaseEntity } from '@/types/common';
 
-export type ContractStatus = 'DRAFT' | 'ACTIVE' | 'COMPLETED' | 'TERMINATED' | 'EXPIRED' | 'PENDING';
-export type BillingTerms = 'MONTHLY' | 'QUARTERLY' | 'QUARTERLY' | 'UPON_COMPLETION' | 'MILESTONE_BASED';
-export type PaymentTerms = 'ADVANCE' | 'ON_DELIVERY' | 'NET_30' | 'NET_60' | 'MILESTONE_BASED';
+// Wire values come from ContractStatusEnum, which serialises via @JsonValue in
+// lowercase. The backend sets DRAFT on create and exposes no status transition
+// endpoint, so status is read-only from the client's point of view.
+export type ContractStatus = 'draft' | 'active' | 'completed' | 'cancelled';
 
+// Mirrors ContractResponseDTO.
 export interface ContractResponse extends BaseEntity {
   projectId: string;
-  clientId: string;
   contractNumber: string;
-  title: string;
-  description?: string;
-  contractValue: number;
-  billingTerms: BillingTerms;
-  paymentTerms: PaymentTerms;
+  clientId?: string;
+  contractorId?: string;
+  workOrderNumber?: string;
+  agreementNumber?: string;
+  contractValue?: number;
+  startDate?: string;
+  endDate?: string;
+  securityDeposit?: number;
+  retentionPercentage?: number;
   status: ContractStatus;
-  startDate: string;
-  endDate: string;
-  signedDate?: string;
-  notes?: string;
-  documentUrl?: string;
+  documentReference?: string;
 }
 
+// Mirrors ContractRequestDTO, used for both create and update. projectId is
+// @NotNull and contractNumber is @NotBlank; contractValue must be positive when
+// supplied. Status is not accepted — create always starts at 'draft'.
 export interface ContractCreateRequest {
   projectId: string;
-  clientId: string;
   contractNumber: string;
-  title: string;
-  description?: string;
-  contractValue: number;
-  billingTerms: BillingTerms;
-  paymentTerms: PaymentTerms;
-  status: ContractStatus;
-  startDate: string;
-  endDate: string;
-  notes?: string;
+  clientId?: string;
+  contractorId?: string;
+  workOrderNumber?: string;
+  agreementNumber?: string;
+  contractValue?: number;
+  startDate?: string;
+  endDate?: string;
+  securityDeposit?: number;
+  retentionPercentage?: number;
+  documentReference?: string;
 }
 
-export interface ContractUpdateRequest {
-  clientId?: string;
-  title?: string;
-  description?: string;
-  contractValue?: number;
-  billingTerms?: BillingTerms;
-  paymentTerms?: PaymentTerms;
-  status?: ContractStatus;
-  endDate?: string;
-  notes?: string;
-}
+export type ContractUpdateRequest = ContractCreateRequest;
+
+export type Contract = ContractResponse;
+export type ContractRequest = ContractCreateRequest | ContractUpdateRequest;

@@ -5,33 +5,29 @@ import type {
   MaterialCreateRequest,
   MaterialUpdateRequest,
   MaterialTransferRequest,
+  MaterialTransferResponse,
   StockLedgerEntry,
 } from '@/types/material';
 
 export const materialApi = {
-  // CRUD Operations
+  // CRUD Operations. Materials are scoped to an organization, which the backend
+  // resolves from the caller's membership when organizationId is omitted.
   create: (body: MaterialCreateRequest): Promise<MaterialResponse> =>
     apiClient.post<MaterialResponse>('/materials', body),
 
   // Note: the backend's /materials list endpoint (MaterialController.listMaterials) returns
   // a flat array — it does not implement pagination despite the x-page/x-limit headers sent here.
+  // It also reads no x-filter-* headers, so arbitrary filters are dropped; use search() instead.
   list: (
     projectId?: string,
     page: number = 1,
-    limit: number = 20,
-    filters?: Record<string, any>
+    limit: number = 20
   ): Promise<MaterialResponse[]> =>
     apiClient.get<MaterialResponse[]>('/materials', {
       headers: {
         'x-page': String(page),
         'x-limit': String(limit),
         ...(projectId && { 'x-project-id': projectId }),
-        ...Object.fromEntries(
-          Object.entries(filters || {}).map(([k, v]) => [
-            `x-filter-${k}`,
-            String(v),
-          ])
-        ),
       },
     }),
 
@@ -63,26 +59,24 @@ export const materialApi = {
       }
     ),
 
+  // Moves stock between two projects and records both legs in the ledger.
+  // Returns the transfer record, not the material.
   transfer: (
     body: MaterialTransferRequest
-  ): Promise<MaterialResponse> =>
-    apiClient.post<MaterialResponse>('/materials/transfer', body),
+  ): Promise<MaterialTransferResponse> =>
+    apiClient.post<MaterialTransferResponse>('/materials/transfer', body),
 
-  // Search & Filter
-  search: (
-    query: string,
-    projectId?: string,
-    limit: number = 20
-  ): Promise<MaterialResponse[]> =>
+  // Search & Filter. Matches material code, name, or category.
+  // Note: the backend's search endpoint does not narrow by project.
+  search: (query: string): Promise<MaterialResponse[]> =>
     apiClient.get<MaterialResponse[]>('/materials/search', {
       headers: {
         'x-search': query,
-        'x-limit': String(limit),
-        ...(projectId && { 'x-project-id': projectId }),
       },
     }),
 
-  // Low Stock Alert
+  // Low Stock Alert. Reports materials at or below their minimumStock; when a
+  // project is given, stock is measured on that project alone.
   getLowStockItems: (
     projectId?: string
   ): Promise<MaterialResponse[]> =>

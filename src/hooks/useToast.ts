@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useContext, createContext, useState, ReactNode } from 'react';
-import type { Toast, NotificationType } from '@/types/common';
+import type { Toast } from '@/types/common';
+import { NotificationType } from '@/types/common';
 
 interface ToastContextType {
   toasts: Toast[];
@@ -52,17 +53,21 @@ export function useToastProvider() {
     [addToast]
   );
 
-  return {
+  // Annotated so the shorthand helpers below inherit their parameter types from
+  // ToastContextType instead of being inferred as implicit `any`.
+  const value: ToastContextType = {
     toasts,
     addToast,
     removeToast,
     success: (message, title, duration) =>
-      createToast('success', message, title, duration),
+      createToast(NotificationType.SUCCESS, message, title, duration),
     error: (message, title, duration) =>
-      createToast('error', message, title, duration),
+      createToast(NotificationType.ERROR, message, title, duration),
     info: (message, title, duration) =>
-      createToast('info', message, title, duration),
+      createToast(NotificationType.INFO, message, title, duration),
     warning: (message, title, duration) =>
-      createToast('warning', message, title, duration),
+      createToast(NotificationType.WARNING, message, title, duration),
   };
+
+  return value;
 }

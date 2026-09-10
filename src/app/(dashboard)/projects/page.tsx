@@ -43,10 +43,10 @@ export default function ProjectsPage() {
           message: 'Organization ID is required',
         });
       }
-      return projectApi.list(organizationId, pagination.page, pagination.limit, {
-        status: statusFilter || undefined,
-        search: searchQuery || undefined,
-      });
+      // The backend's /projects endpoint returns every project for the
+      // organization as a flat array — it supports neither pagination nor
+      // server-side filtering, so search and status are applied client-side below.
+      return projectApi.list(organizationId);
     },
     {
       skip: !organizationId,
@@ -62,7 +62,18 @@ export default function ProjectsPage() {
     }
   );
 
-  const projects = response || [];
+  // Applied here because the endpoint returns the organization's full project list.
+  // Project status is a plain Java enum, so it arrives UPPERCASE on the wire.
+  const projects = (response || []).filter((project) => {
+    if (statusFilter && project.status !== statusFilter) return false;
+    if (!searchQuery) return true;
+    const term = searchQuery.trim().toLowerCase();
+    return (
+      project.name.toLowerCase().includes(term) ||
+      (project.code || '').toLowerCase().includes(term) ||
+      (project.location || '').toLowerCase().includes(term)
+    );
+  });
 
   const handleSearch = useCallback(
     async (e: React.FormEvent) => {
@@ -136,7 +147,6 @@ export default function ProjectsPage() {
               { label: 'Completed', value: 'COMPLETED' },
               { label: 'On Hold', value: 'ON_HOLD' },
               { label: 'Cancelled', value: 'CANCELLED' },
-              { label: 'Archived', value: 'ARCHIVED' },
             ]}
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}

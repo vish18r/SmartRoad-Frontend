@@ -12,13 +12,14 @@ export const workerApi = {
   create: (body: WorkerCreateRequest): Promise<WorkerResponse> =>
     apiClient.post<WorkerResponse>('/workers', body),
 
-  // Note: the backend's /workers list endpoint returns a flat array — pagination is not implemented.
-  list: (projectId?: string, page: number = 1, limit: number = 20): Promise<WorkerResponse[]> =>
+  // Note: the backend's /workers list endpoint returns a flat array — pagination is not
+  // implemented, and it reads no x-project-id header: the roster is scoped to the caller's
+  // organization. To list one site's workers use listBySite() in workers-api instead.
+  list: (page: number = 1, limit: number = 20): Promise<WorkerResponse[]> =>
     apiClient.get<WorkerResponse[]>('/workers', {
       headers: {
         'x-page': String(page),
         'x-limit': String(limit),
-        ...(projectId && { 'x-project-id': projectId }),
       },
     }),
 
@@ -47,8 +48,8 @@ export const workerApi = {
     }),
 
   // Legacy methods
-  getList: (projectId?: string): Promise<WorkerResponse[]> =>
-    workerApi.list(projectId, 1, 1000),
+  getList: (): Promise<WorkerResponse[]> =>
+    workerApi.list(1, 1000),
 
   remove: (id: string): Promise<null> =>
     workerApi.delete(id),

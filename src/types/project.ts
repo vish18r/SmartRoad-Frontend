@@ -1,6 +1,10 @@
 import type { BaseEntity } from '@/types/common';
 
-export type ProjectStatus = 'DRAFT' | 'ACTIVE' | 'COMPLETED' | 'ARCHIVED' | 'CANCELLED' | 'ON_HOLD';
+// ProjectStatus is a plain Java enum with no @JsonValue, so unlike the other
+// status enums in this API it serialises as the constant NAME — uppercase.
+// Archived-ness is not a status: it is the separate `archived` boolean, and the
+// list endpoint already excludes archived projects.
+export type ProjectStatus = 'DRAFT' | 'ACTIVE' | 'ON_HOLD' | 'COMPLETED' | 'CANCELLED';
 
 export interface ProjectResponse extends BaseEntity {
   organizationId: string;

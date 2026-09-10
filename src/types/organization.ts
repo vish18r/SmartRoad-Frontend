@@ -30,17 +30,28 @@ export interface OrganizationUpdateRequest {
   logoUrl?: string;
 }
 
+// Wire values come from UserRole, whose @JsonValue equals the constant name, so
+// these stay uppercase — unlike the @JsonValue enums elsewhere in the API.
+export type OrganizationMemberRole =
+  | 'ADMIN'
+  | 'MANAGER'
+  | 'SUPERVISOR'
+  | 'WORKER'
+  | 'USER';
+
+// Mirrors OrganizationMemberResponseDTO. The membership row's own id and
+// organizationId are not exposed — a member is identified by their user ID.
 export interface OrganizationMemberResponse {
-  id: string;
-  organizationId: string;
   userId: string;
-  role: string;
-  joinedDate?: string;
+  role: OrganizationMemberRole;
+  active: boolean;
 }
 
+// Mirrors OrganizationMemberRequestDTO. Adding a user who was previously
+// removed reactivates their membership and applies the new role.
 export interface OrganizationMemberCreateRequest {
   userId: string;
-  role: string;
+  role: OrganizationMemberRole;
 }
 
 export type Organization = OrganizationResponse;

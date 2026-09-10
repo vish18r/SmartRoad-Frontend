@@ -1,70 +1,88 @@
 import type { BaseEntity } from '@/types/common';
 
-export type MaterialStatus = 'IN_STOCK' | 'LOW_STOCK' | 'OUT_OF_STOCK' | 'DISCONTINUED';
-export type UnitOfMeasure = 'KG' | 'LITER' | 'UNIT' | 'METER' | 'CUBIC_METER' | 'SQUARE_METER' | 'TON' | 'BAG';
+// Wire values come from StockTransactionTypeEnum, which serialises via @JsonValue
+// in lower_snake_case.
+export type StockTransactionType =
+  | 'received'
+  | 'issued'
+  | 'transfer'
+  | 'adjustment'
+  | 'consumption';
 
+// Wire values come from StockTransferStatusEnum (@JsonValue, lower_snake_case).
+export type StockTransferStatus =
+  | 'requested'
+  | 'approved'
+  | 'in_transit'
+  | 'completed'
+  | 'cancelled';
+
+// Mirrors MaterialResponseDTO. Materials are catalogue rows scoped to an
+// organization; per-project quantities live in the stock ledger, not here.
 export interface MaterialResponse extends BaseEntity {
-  projectId?: string;
-  code: string;
-  name: string;
-  description?: string;
+  organizationId: string;
+  materialCode: string;
+  materialName: string;
+  unit: string;
   category?: string;
-  unitOfMeasure: UnitOfMeasure;
-  quantity: number;
-  unitCost: number;
-  totalCost: number;
+  description?: string;
   minimumStock?: number;
-  maximumStock?: number;
-  status: MaterialStatus;
-  supplierId?: string;
-  poNumber?: string;
-  expiryDate?: string;
-  notes?: string;
 }
 
+// Mirrors MaterialRequestDTO. The backend uses one request DTO for create and
+// update, and materialCode/materialName/unit are @NotBlank on both — so an
+// update must resend materialCode even though the service ignores it.
 export interface MaterialCreateRequest {
-  projectId?: string;
-  code: string;
-  name: string;
-  description?: string;
+  materialCode: string;
+  materialName: string;
+  unit: string;
   category?: string;
-  unitOfMeasure: UnitOfMeasure;
-  quantity: number;
-  unitCost: number;
+  description?: string;
   minimumStock?: number;
-  maximumStock?: number;
-  supplierId?: string;
-  poNumber?: string;
-  expiryDate?: string;
-  notes?: string;
 }
 
-export interface MaterialUpdateRequest {
-  name?: string;
-  description?: string;
-  category?: string;
-  quantity?: number;
-  unitCost?: number;
-  status?: MaterialStatus;
-  minimumStock?: number;
-  maximumStock?: number;
-  expiryDate?: string;
-  notes?: string;
-}
+export type MaterialUpdateRequest = MaterialCreateRequest;
 
+// Mirrors StockTransferRequestDTO. Transfers move stock between projects, so
+// source and destination are project IDs — not free-text locations.
 export interface MaterialTransferRequest {
+  sourceProjectId: string;
+  destinationProjectId: string;
   materialId: string;
-  fromLocation: string;
-  toLocation: string;
-  quantity: number;
-  reason?: string;
-  notes?: string;
+  quantityRequested: number;
+  transferDate?: string;
 }
 
-export interface StockLedgerEntry extends BaseEntity {
+// Mirrors StockTransferResponseDTO.
+export interface MaterialTransferResponse {
+  id: string;
+  sourceProjectId: string;
+  destinationProjectId: string;
   materialId: string;
-  transactionType: 'RECEIVED' | 'ISSUED' | 'TRANSFER' | 'ADJUSTMENT' | 'CONSUMPTION';
+  quantityRequested: number;
+  quantityTransferred?: number;
+  transferDate?: string;
+  requestedBy?: string;
+  approvedBy?: string;
+  status: StockTransferStatus;
+  createdBy?: string;
+  modifiedBy?: string;
+  createdDate?: string;
+  modifiedDate?: string;
+}
+
+// Mirrors StockLedgerEntryResponseDTO. Quantity is signed: the outgoing leg of a
+// transfer is negative.
+export interface StockLedgerEntry {
+  id: string;
+  materialId: string;
+  projectId?: string;
+  transactionType: StockTransactionType;
   quantity: number;
   referenceNumber?: string;
   notes?: string;
+  createdDate?: string;
 }
+
+export type Material = MaterialResponse;
+export type MaterialRequest = MaterialCreateRequest | MaterialUpdateRequest;

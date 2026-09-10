@@ -29,17 +29,17 @@ export default function MaterialsPage() {
     },
   });
 
-  // Search and filter state
+  // Search state. Materials carry no stock status of their own, so the only
+  // server-side filter available is the free-text search.
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('');
 
-  // API call
+  // API call. A non-empty query routes to /materials/search, which matches
+  // material code, name, or category.
   const { data: response, loading, error, refetch } = useApi(
     () =>
-      materialApi.list(projectId || undefined, pagination.page, pagination.limit, {
-        status: statusFilter || undefined,
-        search: searchQuery || undefined,
-      }),
+      searchQuery
+        ? materialApi.search(searchQuery)
+        : materialApi.list(projectId || undefined, pagination.page, pagination.limit),
     {
       onError: (err) => {
         toast.error(err.message || 'Failed to load materials');
@@ -98,18 +98,6 @@ export default function MaterialsPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <FormSelect
-            label="Status"
-            options={[
-              { label: 'All', value: '' },
-              { label: 'In Stock', value: 'IN_STOCK' },
-              { label: 'Low Stock', value: 'LOW_STOCK' },
-              { label: 'Out of Stock', value: 'OUT_OF_STOCK' },
-              { label: 'Discontinued', value: 'DISCONTINUED' },
-            ]}
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          />
           <div className="flex items-end">
             <FormSubmitButton className="w-full">Search</FormSubmitButton>
           </div>
@@ -167,13 +155,10 @@ export default function MaterialsPage() {
                   Category
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Quantity
+                  Unit
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Unit Cost
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
+                  Min Stock
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -184,34 +169,19 @@ export default function MaterialsPage() {
               {materials.map((material) => (
                 <tr key={material.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {material.code}
+                    {material.materialCode}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {material.name}
+                    {material.materialName}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                     {material.category || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {material.quantity} {material.unitOfMeasure}
+                    {material.unit}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ₹{material.unitCost.toFixed(2)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        material.status === 'IN_STOCK'
-                          ? 'bg-green-100 text-green-800'
-                          : material.status === 'LOW_STOCK'
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : material.status === 'OUT_OF_STOCK'
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}
-                    >
-                      {material.status.replace('_', ' ')}
-                    </span>
+                    {material.minimumStock ?? '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                     <Link

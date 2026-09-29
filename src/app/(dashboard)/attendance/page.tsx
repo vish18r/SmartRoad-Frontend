@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { workersApi } from "@/lib/api/workers-api";
+import { projectApi } from "@/lib/api/project-api";
 import { useWorkspace } from "@/components/workspace/workspace-context";
 import { Loading, ErrorState, EmptyState } from "@/components/common/states";
 import type { WorkerResponse, AttendanceResponse } from "@/types/worker";
+import type { ProjectResponse } from "@/types/project";
 import type { ApiError } from "@/types/api";
 import { apiClient } from "@/lib/api/api-client";
 
@@ -18,15 +20,17 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 export default function AttendancePage() {
-  const { organizationId, projectId } = useWorkspace();
+  const { organizationId, projectId, setProjectId } = useWorkspace();
   const [workers, setWorkers] = useState<WorkerResponse[]>([]);
   const [attendance, setAttendance] = useState<AttendanceResponse[]>([]);
+  const [projects, setProjects] = useState<ProjectResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [date, setDate] = useState(today());
 
   useEffect(() => {
     if (!organizationId) return;
+    projectApi.list(organizationId).then(setProjects).catch(() => {});
     workersApi.list(organizationId).then(setWorkers).catch(() => {});
   }, [organizationId]);
 
@@ -50,9 +54,26 @@ export default function AttendancePage() {
       </div>
 
       {!organizationId ? (
-        <div className="mt-6"><ErrorState message="Select an organization from the top bar." /></div>
+        <div className="mt-6"><ErrorState message="Select an organization from the top bar first." /></div>
       ) : !projectId ? (
-        <div className="mt-6"><ErrorState message="Select a project from the top bar to view attendance." /></div>
+        <div className="mt-6 rounded-xl border border-slate-200 bg-white p-6">
+          <p className="text-sm font-medium text-slate-700 mb-3">Select a project to view attendance:</p>
+          {projects.length === 0 ? (
+            <EmptyState title="No projects found" description="Create a project first to track attendance." />
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {projects.map(p => (
+                <button
+                  key={p.id}
+                  onClick={() => setProjectId(p.id)}
+                  className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:border-orange-400 hover:text-orange-600 transition-colors"
+                >
+                  {p.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       ) : (
         <>
           <div className="mt-5 flex items-center gap-3">

@@ -1,2 +1,16 @@
-import { PendingPage } from "@/components/common/pending-page";
-export default function MachineRentalsPage() { return <PendingPage title="Machine rentals" description="Track rented equipment, vendors, rates, rental periods, and payments." capabilities={["Daily and hourly rates", "Project rental periods", "Rental payment status"]} />; }
+"use client";
+import { EmptyState } from "@/components/common/states";
+export default function MachineRentalsPage() {
+  return (
+    <>
+      <div>
+        <p className="text-sm font-medium text-orange-600">Smart Road</p>
+        <h1 className="mt-1 text-2xl font-bold text-slate-900">Machine rentals</h1>
+        <p className="mt-1 text-sm text-slate-500">Track rented equipment, vendors, rates, rental periods, and payments.</p>
+      </div>
+      <div className="mt-6">
+        <EmptyState title="No rentals yet" description="Daily and hourly rates, project rental periods, rental payment status" />
+      </div>
+    </>
+  );
+}

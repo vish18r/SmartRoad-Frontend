@@ -1,15 +1,14 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import { businessProfileApi } from '@/lib/api';
 import { useToast } from '@/hooks/useToast';
 import { useApi } from '@/hooks/useApi';
+import { useWorkspace } from '@/components/workspace/workspace-context';
 import type { CompleteBusinessProfile, BusinessProfileResponse } from '@/types/business-profile';
 
 export default function BusinessProfilePage() {
   const toast = useToast();
-  const searchParams = useSearchParams();
-  const organizationId = searchParams.get('organizationId');
+  const { organizationId } = useWorkspace();
 
   // Fetch business profile with complete data
   const { data: profile, loading, error, refetch } = useApi(

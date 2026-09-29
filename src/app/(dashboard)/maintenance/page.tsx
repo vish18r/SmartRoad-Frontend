@@ -1,2 +1,16 @@
-import { PendingPage } from "@/components/common/pending-page";
-export default function MaintenancePage() { return <PendingPage title="Machine maintenance" description="Plan service intervals and keep equipment working safely." capabilities={["Maintenance history and cost", "Running hours and next service", "Due and overdue alerts"]} />; }
+"use client";
+import { EmptyState } from "@/components/common/states";
+export default function MaintenancePage() {
+  return (
+    <>
+      <div>
+        <p className="text-sm font-medium text-orange-600">Smart Road</p>
+        <h1 className="mt-1 text-2xl font-bold text-slate-900">Maintenance</h1>
+        <p className="mt-1 text-sm text-slate-500">Schedule and track preventive and corrective maintenance for machinery and equipment.</p>
+      </div>
+      <div className="mt-6">
+        <EmptyState title="No maintenance records" description="Add machines first, then schedule maintenance tasks." />
+      </div>
+    </>
+  );
+}

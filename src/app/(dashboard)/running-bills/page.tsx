@@ -1,2 +1,16 @@
-import { PendingPage } from "@/components/common/pending-page";
-export default function RunningBillsPage() { return <PendingPage title="Running account bills" description="Track RA bill numbers, work value, previous and current bills, deductions, net, paid, and balance." capabilities={["Payment progress", "Bill history", "Deductions and balance"]} />; }
+"use client";
+import { EmptyState } from "@/components/common/states";
+export default function RunningBillsPage() {
+  return (
+    <>
+      <div>
+        <p className="text-sm font-medium text-orange-600">Smart Road</p>
+        <h1 className="mt-1 text-2xl font-bold text-slate-900">Running account bills</h1>
+        <p className="mt-1 text-sm text-slate-500">Track RA bill numbers, work value, previous and current bills, deductions, net, paid, and balance.</p>
+      </div>
+      <div className="mt-6">
+        <EmptyState title="No bills yet" description="Payment progress, bill history, deductions and balance" />
+      </div>
+    </>
+  );
+}

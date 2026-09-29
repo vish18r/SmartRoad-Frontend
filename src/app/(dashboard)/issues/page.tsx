@@ -1,2 +1,16 @@
-import { PendingPage } from "@/components/common/pending-page";
-export default function IssuesPage() { return <PendingPage title="Project issues" description="Report, assign, prioritize, and resolve project problems with an auditable history." capabilities={["Priority and category filters", "Assignment and due dates", "Open, progress, resolved, and closed statuses"]} />; }
+"use client";
+import { EmptyState } from "@/components/common/states";
+export default function IssuesPage() {
+  return (
+    <>
+      <div>
+        <p className="text-sm font-medium text-orange-600">Smart Road</p>
+        <h1 className="mt-1 text-2xl font-bold text-slate-900">Project issues</h1>
+        <p className="mt-1 text-sm text-slate-500">Report, assign, prioritize, and resolve project problems with an auditable history.</p>
+      </div>
+      <div className="mt-6">
+        <EmptyState title="No issues reported" description="Priority and category filters, assignment and due dates, open, progress, resolved, and closed statuses" />
+      </div>
+    </>
+  );
+}

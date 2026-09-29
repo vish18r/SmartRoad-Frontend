@@ -1,2 +1,16 @@
-import { PendingPage } from "@/components/common/pending-page";
-export default function TimelinePage() { return <PendingPage title="Project timeline" description="Follow project activity from survey through completion." capabilities={["Timestamped activity history", "User and status details", "Progress milestone view"]} />; }
+"use client";
+import { EmptyState } from "@/components/common/states";
+export default function TimelinePage() {
+  return (
+    <>
+      <div>
+        <p className="text-sm font-medium text-orange-600">Smart Road</p>
+        <h1 className="mt-1 text-2xl font-bold text-slate-900">Project timeline</h1>
+        <p className="mt-1 text-sm text-slate-500">Follow project activity from survey through completion.</p>
+      </div>
+      <div className="mt-6">
+        <EmptyState title="No timeline events" description="Timestamped activity history, user and status details, progress milestone view" />
+      </div>
+    </>
+  );
+}

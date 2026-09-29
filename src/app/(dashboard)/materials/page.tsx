@@ -2,19 +2,18 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import { materialApi } from '@/lib/api';
+import { useWorkspace } from '@/components/workspace/workspace-context';
 import { useToast } from '@/hooks/useToast';
 import { useApi } from '@/hooks/useApi';
 import { usePagination } from '@/hooks/usePagination';
 import { useTable } from '@/hooks/useTable';
-import { Form, FormInput, FormSelect, FormSubmitButton } from '@/components/ui/form';
+import { Form, FormInput, FormSubmitButton } from '@/components/ui/form';
 import type { MaterialResponse } from '@/types/material';
 
 export default function MaterialsPage() {
   const toast = useToast();
-  const searchParams = useSearchParams();
-  const projectId = searchParams.get('projectId');
+  const { projectId } = useWorkspace();
 
   // Pagination
   const pagination = usePagination({ initialPage: 1, initialLimit: 20 });

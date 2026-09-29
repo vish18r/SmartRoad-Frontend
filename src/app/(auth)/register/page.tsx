@@ -30,12 +30,13 @@ export default function RegisterPage() {
     event.preventDefault();
 
     const cleanPhoneNumber = form.phoneNumber.replace(/\D/g, "");
+    const cleanCountryCode = form.countryCode.replace(/\D/g, "");
 
     if (
       !form.firstName.trim() ||
       !/^\S+@\S+\.\S+$/.test(form.email) ||
       !/^\d{10,15}$/.test(cleanPhoneNumber) ||
-      !/^\+[1-9]\d{0,2}$/.test(form.countryCode)
+      !/^\d{1,3}$/.test(cleanCountryCode)
     ) {
       return setError("Enter a first name, valid email, country code, and 10–15 digit phone number.");
     }
@@ -59,7 +60,7 @@ export default function RegisterPage() {
         lastName: form.lastName.trim(),
         email: form.email.trim(),
         phoneNumber: cleanPhoneNumber,
-        countryCode: form.countryCode,
+        countryCode: `+${cleanCountryCode}`,
         password: form.password,
         confirmPassword: form.confirmPassword,
       });

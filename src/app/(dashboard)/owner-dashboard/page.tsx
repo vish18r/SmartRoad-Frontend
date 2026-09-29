@@ -1,19 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { ErrorState, Loading } from "@/components/common/states";
 import { Card } from "@/components/ui/card";
 import { useApi } from "@/hooks/useApi";
 import { dashboardApi } from "@/lib/api/dashboard-api";
+import { useWorkspace } from "@/components/workspace/workspace-context";
 
 const currency = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
-const isUuid = (value: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 
 export default function OwnerDashboardPage() {
-	const searchParams = useSearchParams();
-	const requested = searchParams.get("organizationId") || "";
-	const organizationId = isUuid(requested) ? requested : "";
+	const { organizationId: rawOrgId } = useWorkspace();
+	const organizationId = rawOrgId ?? "";
 
 	const { data, loading, error } = useApi(
 		() => dashboardApi.getOwnerDashboard(organizationId),

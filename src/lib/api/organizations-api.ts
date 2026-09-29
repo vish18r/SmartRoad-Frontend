@@ -12,7 +12,7 @@ export const organizationsApi = {
     apiClient.post<OrganizationResponse>("/organizations", body),
 
   list: (): Promise<OrganizationResponse[]> =>
-    apiClient.get<OrganizationResponse[]>("/organizations"),
+    apiClient.get<OrganizationResponse[]>("/organizations/my-organizations"),
 
   getMyOrganizations: (): Promise<OrganizationResponse[]> =>
     apiClient.get<OrganizationResponse[]>("/organizations/my-organizations"),

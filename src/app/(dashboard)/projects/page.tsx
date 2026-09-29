@@ -2,20 +2,20 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { projectApi } from '@/lib/api';
 import { useToast } from '@/hooks/useToast';
 import { useApi } from '@/hooks/useApi';
 import { usePagination } from '@/hooks/usePagination';
 import { useTable } from '@/hooks/useTable';
 import { Form, FormInput, FormSelect, FormSubmitButton } from '@/components/ui/form';
+import { useWorkspace } from '@/components/workspace/workspace-context';
 import type { ProjectResponse } from '@/types/project';
 
 export default function ProjectsPage() {
   const router = useRouter();
   const toast = useToast();
-  const searchParams = useSearchParams();
-  const organizationId = searchParams.get('organizationId');
+  const { organizationId } = useWorkspace();
 
   // Pagination
   const pagination = usePagination({ initialPage: 1, initialLimit: 20 });

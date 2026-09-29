@@ -1,2 +1,16 @@
-import { PendingPage } from "@/components/common/pending-page";
-export default function ShiftsPage() { return <PendingPage title="Shift management" description="Assign morning, afternoon, and night shifts to workers and supervisors by project." capabilities={["Shift start and end", "Worker attendance", "Supervisor assignments"]} />; }
+"use client";
+import { EmptyState } from "@/components/common/states";
+export default function ShiftsPage() {
+  return (
+    <>
+      <div>
+        <p className="text-sm font-medium text-orange-600">Smart Road</p>
+        <h1 className="mt-1 text-2xl font-bold text-slate-900">Shifts</h1>
+        <p className="mt-1 text-sm text-slate-500">Define and manage work shifts, timings, and worker assignments.</p>
+      </div>
+      <div className="mt-6">
+        <EmptyState title="No shifts configured" description="Create shift templates to start scheduling workers." />
+      </div>
+    </>
+  );
+}

@@ -1,2 +1,16 @@
-import { PendingPage } from "@/components/common/pending-page";
-export default function MachineUtilizationPage() { return <PendingPage title="Machine utilization" description="Compare running hours, idle time, fuel, maintenance cost, and cost per hour." capabilities={["Utilization percentage", "Project-wise usage", "Running and idle hour analytics"]} />; }
+"use client";
+import { EmptyState } from "@/components/common/states";
+export default function MachineUtilizationPage() {
+  return (
+    <>
+      <div>
+        <p className="text-sm font-medium text-orange-600">Smart Road</p>
+        <h1 className="mt-1 text-2xl font-bold text-slate-900">Machine utilization</h1>
+        <p className="mt-1 text-sm text-slate-500">Compare running hours, idle time, fuel, maintenance cost, and cost per hour.</p>
+      </div>
+      <div className="mt-6">
+        <EmptyState title="No utilization data" description="Utilization percentage, project-wise usage, running and idle hour analytics" />
+      </div>
+    </>
+  );
+}

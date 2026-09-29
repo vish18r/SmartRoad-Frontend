@@ -1,2 +1,16 @@
-import { PendingPage } from "@/components/common/pending-page";
-export default function RealtimePage() { return <PendingPage title="Live updates" description="Prepare the notification, progress, approval, comment, and site-update stream abstraction." capabilities={["Connection status", "Reconnect and retry", "WebSocket or SSE integration pending"]} />; }
+"use client";
+import { EmptyState } from "@/components/common/states";
+export default function RealtimePage() {
+  return (
+    <>
+      <div>
+        <p className="text-sm font-medium text-orange-600">Smart Road</p>
+        <h1 className="mt-1 text-2xl font-bold text-slate-900">Live updates</h1>
+        <p className="mt-1 text-sm text-slate-500">Prepare the notification, progress, approval, comment, and site-update stream abstraction.</p>
+      </div>
+      <div className="mt-6">
+        <EmptyState title="No live updates" description="Connection status, reconnect and retry, WebSocket or SSE integration coming soon" />
+      </div>
+    </>
+  );
+}

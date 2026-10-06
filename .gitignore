@@ -9,6 +9,3 @@ out/
 *.tsbuildinfo
 next-env.d.ts
 .next-build/
-
-### Local docs ###
-docs/

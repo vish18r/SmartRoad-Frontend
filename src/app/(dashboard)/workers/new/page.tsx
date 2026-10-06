@@ -6,7 +6,7 @@ import { workersApi } from "@/lib/api/workers-api";
 import { useWorkspace } from "@/components/workspace/workspace-context";
 import { FaceCamera, type FaceCameraHandle } from "@/components/common/face-camera";
 import { WorkerQr } from "@/components/common/worker-qr";
-import { captureDescriptor } from "@/lib/face/face";
+import { captureVerifiedDescriptor } from "@/lib/face/face";
 import type { WorkerResponse } from "@/types/worker";
 
 const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500";
@@ -40,9 +40,12 @@ export default function NewWorkerPage() {
     setCapturing(true); setFaceMessage("Hold still, looking at the camera...");
     try {
       // Hold still: several frames are averaged into one face template.
-      const found = await captureDescriptor(video, { frames: 5, minFrames: 3, warmupMs: 700 });
+      const capture = await captureVerifiedDescriptor(video);
+      const found = capture.descriptor;
       setDescriptor(found);
-      setFaceMessage(found ? "Face captured." : "No steady face found. Face the camera in good light, hold still and try again.");
+      setFaceMessage(found ? "Face captured and verified." : capture.reason === "unsteady"
+        ? "The face was not steady. Look straight at the camera, hold still in good light and capture again."
+        : "No face found. Face the camera in good light and capture again.");
     } catch {
       setFaceMessage("Face recognition could not start. Reload the page and try again.");
     } finally {

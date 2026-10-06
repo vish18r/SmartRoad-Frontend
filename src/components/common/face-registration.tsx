@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { FaceCamera, type FaceCameraHandle } from "@/components/common/face-camera";
-import { captureDescriptor } from "@/lib/face/face";
+import { captureVerifiedDescriptor } from "@/lib/face/face";
 import { workersApi } from "@/lib/api/workers-api";
 import type { WorkerResponse } from "@/types/worker";
 import type { ApiError } from "@/types/api";
@@ -26,9 +26,12 @@ export function FaceRegistration({ worker, onDone, onCancel }: FaceRegistrationP
     setMessage("Hold still, looking at the camera...");
     try {
       // Hold still: several frames are averaged into one face template.
-      const descriptor = await captureDescriptor(video, { frames: 5, minFrames: 3, warmupMs: 700 });
+      const capture = await captureVerifiedDescriptor(video);
+      const descriptor = capture.descriptor;
       if (!descriptor) {
-        setMessage("No steady face found. Face the camera in good light, hold still and try again.");
+        setMessage(capture.reason === "unsteady"
+          ? "The face was not steady. Look straight at the camera, hold still in good light and try again."
+          : "No face found. Face the camera in good light and try again.");
         return;
       }
       setMessage("Saving...");

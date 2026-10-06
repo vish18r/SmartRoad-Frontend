@@ -83,3 +83,23 @@ export async function captureDescriptor(source: HTMLVideoElement, options: Captu
   const consistent = found.filter(d => euclidean(d, mean) <= OUTLIER_DISTANCE);
   return consistent.length >= minFrames ? average(consistent) : null;
 }
+
+// Two independent captures of the same steady face must agree this closely, or the registration is refused.
+const SELF_CONSISTENCY_DISTANCE = 0.4;
+
+export type VerifiedCapture = { descriptor: number[]; reason?: undefined } | { descriptor: null; reason: "no-face" | "unsteady" };
+
+/**
+ * Captures a face template for registration and proves it is reproducible: a second, separate capture
+ * must land close to the first. A template that could not even match the same person seconds later
+ * would be rejected at every future check-in, so it is never saved.
+ */
+export async function captureVerifiedDescriptor(source: HTMLVideoElement): Promise<VerifiedCapture> {
+  const template = await captureDescriptor(source, { frames: 5, minFrames: 3, warmupMs: 700 });
+  if (!template) return { descriptor: null, reason: "no-face" };
+
+  const check = await captureDescriptor(source, { frames: 3, minFrames: 2, intervalMs: 200 });
+  if (!check) return { descriptor: null, reason: "no-face" };
+  if (euclidean(template, check) > SELF_CONSISTENCY_DISTANCE) return { descriptor: null, reason: "unsteady" };
+  return { descriptor: template };
+}

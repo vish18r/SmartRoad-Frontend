@@ -40,6 +40,7 @@ export default function MaterialsPage() {
         ? materialApi.search(searchQuery)
         : materialApi.list(projectId || undefined, pagination.page, pagination.limit),
     {
+      deps: [searchQuery, projectId, pagination.page, pagination.limit],
       onError: (err) => {
         toast.error(err.message || 'Failed to load materials');
       },

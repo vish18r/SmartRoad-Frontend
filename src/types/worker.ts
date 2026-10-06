@@ -3,6 +3,9 @@ import type { BaseEntity } from '@/types/common';
 // Wire values come from WorkerStatusEnum, which serialises via @JsonValue in
 // lower_snake_case. Inbound parsing is case-insensitive, but responses are
 // always lowercase — compare against these, not 'ACTIVE'.
+// Mirrors WorkerFaceStatusEnum. Only FACE_REGISTERED workers can use face check-in.
+export type WorkerFaceStatus = 'FACE_REGISTERED' | 'FACE_NOT_REGISTERED';
+
 export type WorkerStatus =
   | 'active'
   | 'inactive'
@@ -37,6 +40,9 @@ export interface WorkerResponse extends BaseEntity {
   emergencyContactName?: string;
   emergencyContactPhone?: string;
   experienceYears?: number;
+  employeeId: string;
+  fullName: string;
+  faceStatus: WorkerFaceStatus;
 }
 
 // Mirrors WorkerRequestDTO, used for both create and update. organizationId and
@@ -64,6 +70,8 @@ export interface WorkerCreateRequest {
   emergencyContactName?: string;
   emergencyContactPhone?: string;
   experienceYears?: number;
+  // 128-value face embedding as a JSON array string. Required when registering a new worker.
+  faceDescriptor?: string;
 }
 
 export type WorkerUpdateRequest = WorkerCreateRequest;

@@ -15,7 +15,7 @@ export default function OwnerDashboardPage() {
 
 	const { data, loading, error } = useApi(
 		() => dashboardApi.getOwnerDashboard(organizationId),
-		{ skip: !organizationId },
+		{ skip: !organizationId, deps: [organizationId] },
 	);
 
 	if (!organizationId) {

@@ -19,4 +19,10 @@ export const workersApi = {
 
   delete: (id: string): Promise<null> =>
     apiClient.delete<null>(`/workers/${id}`),
+
+  registerFace: (id: string, faceDescriptor: number[]): Promise<WorkerResponse> =>
+    apiClient.post<WorkerResponse>(`/workers/${id}/face`, { faceDescriptor: JSON.stringify(faceDescriptor) }),
+
+  getByEmployeeId: (employeeId: string): Promise<WorkerResponse> =>
+    apiClient.get<WorkerResponse>(`/workers/by-employee-id?employeeId=${encodeURIComponent(employeeId)}`),
 };

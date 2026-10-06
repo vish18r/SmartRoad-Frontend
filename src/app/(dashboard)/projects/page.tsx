@@ -50,6 +50,7 @@ export default function ProjectsPage() {
     },
     {
       skip: !organizationId,
+      deps: [organizationId],
       onSuccess: (data) => {
         if (Array.isArray(data)) {
           // API returns array, not paginated response
@@ -160,15 +161,8 @@ export default function ProjectsPage() {
       {/* Results Info */}
       {!loading && (
         <div className="text-sm text-gray-600">
-          Showing{' '}
-          <span className="font-medium">
-            {projects.length === 0
-              ? 0
-              : (pagination.page - 1) * pagination.limit + 1}
-            -
-            {(pagination.page - 1) * pagination.limit + projects.length}
-          </span>{' '}
-          of <span className="font-medium">{pagination.totalRecords}</span> projects
+          Showing <span className="font-medium">{projects.length}</span> of{' '}
+          <span className="font-medium">{(response || []).length}</span> projects
         </div>
       )}
 
@@ -233,7 +227,7 @@ export default function ProjectsPage() {
                     {project.location || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ₹{project.budget.toFixed(2)}
+                    ₹{Number(project.budget ?? 0).toFixed(2)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {project.progress || 0}%

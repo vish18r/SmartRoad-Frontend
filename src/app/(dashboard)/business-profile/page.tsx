@@ -23,6 +23,7 @@ export default function BusinessProfilePage() {
     },
     {
       skip: !organizationId,
+      deps: [organizationId],
       onError: (err) => {
         toast.error(err.message || 'Failed to load business profile');
       },
@@ -42,6 +43,7 @@ export default function BusinessProfilePage() {
     },
     {
       skip: !profile?.id,
+      deps: [profile?.id],
       onError: (err) => {
         toast.error(err.message || 'Failed to load complete profile');
       },

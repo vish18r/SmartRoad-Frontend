@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { contractApi } from "@/lib/api/contract-api";
 import { useWorkspace } from "@/components/workspace/workspace-context";
 import { Loading, ErrorState, EmptyState } from "@/components/common/states";
@@ -46,7 +47,7 @@ export default function ContractsPage() {
           <h1 className="mt-1 text-2xl font-bold text-slate-900">Contracts</h1>
           <p className="mt-1 text-sm text-slate-500">Manage contract terms, work orders, values, dates, payment terms, and documents.</p>
         </div>
-        <button className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">+ New contract</button>
+        <Link href="/contracts/new" className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">+ New contract</Link>
       </div>
       <div className="mt-6">
         {!organizationId ? <ErrorState message="Select an organization from the top bar." /> :

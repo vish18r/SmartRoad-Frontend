@@ -5,6 +5,8 @@ import type { ApiError } from '@/types/api';
 
 interface UseApiOptions {
   skip?: boolean;
+  /** Values the call depends on; the request is re-run whenever one changes. */
+  deps?: unknown[];
   onSuccess?: (data: any) => void;
   onError?: (error: ApiError) => void;
 }
@@ -24,38 +26,46 @@ export function useApi<T>(
   const [loading, setLoading] = useState(!options.skip);
   const [error, setError] = useState<ApiError | null>(null);
   const isMounted = useRef(true);
+  // Callers pass fresh closures every render; keep the latest in refs so they
+  // don't retrigger the fetch effect (which caused an endless loading loop).
+  const apiCallRef = useRef(apiCall);
+  const optionsRef = useRef(options);
+  apiCallRef.current = apiCall;
+  optionsRef.current = options;
 
   const fetchData = useCallback(async () => {
-    if (options.skip) return;
+    if (optionsRef.current.skip) return;
 
     setLoading(true);
     setError(null);
 
     try {
-      const response = await apiCall();
+      const response = await apiCallRef.current();
       if (isMounted.current) {
         setData(response);
-        options.onSuccess?.(response);
+        optionsRef.current.onSuccess?.(response);
       }
     } catch (err) {
       if (isMounted.current) {
         const apiError = err as ApiError;
         setError(apiError);
-        options.onError?.(apiError);
+        optionsRef.current.onError?.(apiError);
       }
     } finally {
       if (isMounted.current) {
         setLoading(false);
       }
     }
-  }, [apiCall, options.skip, options.onSuccess, options.onError]);
+  }, []);
 
   useEffect(() => {
+    isMounted.current = true;
     fetchData();
     return () => {
       isMounted.current = false;
     };
-  }, [fetchData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetchData, options.skip, ...(options.deps ?? [])]);
 
   const refetch = useCallback(async () => {
     await fetchData();

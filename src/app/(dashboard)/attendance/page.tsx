@@ -9,6 +9,8 @@ import type { WorkerResponse, AttendanceResponse } from "@/types/worker";
 import type { ProjectResponse } from "@/types/project";
 import type { ApiError } from "@/types/api";
 import { apiClient } from "@/lib/api/api-client";
+import { formatClock, formatWork } from "@/lib/attendance-format";
+import type { DailyAttendance } from "@/types/attendance";
 
 function today() { return new Date().toISOString().split("T")[0]; }
 
@@ -23,6 +25,7 @@ export default function AttendancePage() {
   const { organizationId, projectId, setProjectId } = useWorkspace();
   const [workers, setWorkers] = useState<WorkerResponse[]>([]);
   const [attendance, setAttendance] = useState<AttendanceResponse[]>([]);
+  const [days, setDays] = useState<Record<string, DailyAttendance>>({});
   const [projects, setProjects] = useState<ProjectResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -41,6 +44,13 @@ export default function AttendancePage() {
       .then(setAttendance)
       .catch((e: ApiError) => setError(e.message))
       .finally(() => setLoading(false));
+  }, [projectId, date]);
+
+  useEffect(() => {
+    if (!projectId) return;
+    apiClient.get<DailyAttendance[]>(`/nextenti/tracking/attendance/daily?projectId=${projectId}&date=${date}`)
+      .then(list => setDays(Object.fromEntries(list.map(d => [d.workerId, d]))))
+      .catch(() => setDays({}));
   }, [projectId, date]);
 
   const attendanceMap = Object.fromEntries(attendance.map(a => [a.workerId, a]));
@@ -94,7 +104,7 @@ export default function AttendancePage() {
                 <table className="w-full text-sm">
                   <thead className="border-b border-slate-200 bg-slate-50">
                     <tr>
-                      {["Worker", "Role", "Status", "Hours Worked", "Notes"].map(h => (
+                      {["Employee ID", "Worker", "Role", "Status", "First check-in", "Last check-out", "Total work", "Hours Worked", "Notes"].map(h => (
                         <th key={h} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{h}</th>
                       ))}
                     </tr>
@@ -104,7 +114,8 @@ export default function AttendancePage() {
                       const rec = attendanceMap[w.id];
                       return (
                         <tr key={w.id} className="hover:bg-slate-50">
-                          <td className="px-4 py-3 font-medium text-slate-900">{w.firstName} {w.lastName ?? ""}</td>
+                          <td className="px-4 py-3 font-semibold text-slate-900">{w.employeeId}</td>
+                          <td className="px-4 py-3 font-medium text-slate-900">{w.fullName}</td>
                           <td className="px-4 py-3 text-slate-600">{w.role ?? "—"}</td>
                           <td className="px-4 py-3">
                             {rec ? (
@@ -113,6 +124,9 @@ export default function AttendancePage() {
                               </span>
                             ) : <span className="text-slate-400 text-xs">Not marked</span>}
                           </td>
+                          <td className="px-4 py-3 text-slate-600">{formatClock(days[w.id]?.firstCheckInTime)}</td>
+                          <td className="px-4 py-3 text-slate-600">{formatClock(days[w.id]?.lastCheckOutTime)}</td>
+                          <td className="px-4 py-3 text-slate-600">{days[w.id] ? formatWork(days[w.id].totalWorkSeconds) : "—"}</td>
                           <td className="px-4 py-3 text-slate-600">{rec?.hoursWorked ?? "—"}</td>
                           <td className="px-4 py-3 text-slate-600">{rec?.notes ?? "—"}</td>
                         </tr>

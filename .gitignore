@@ -10,7 +10,5 @@ out/
 next-env.d.ts
 .next-build/
 
-### Markdown docs (kept local; README.md and CLAUDE.md stay tracked) ###
-*.md
-!README.md
-!CLAUDE.md
+### Local docs ###
+docs/

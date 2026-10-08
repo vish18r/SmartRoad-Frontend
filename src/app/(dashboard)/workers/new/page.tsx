@@ -16,6 +16,10 @@ export default function NewWorkerPage() {
   const { organizationId } = useWorkspace();
   const camera = useRef<FaceCameraHandle>(null);
   const [form, setForm] = useState({ firstName: "", lastName: "", phoneNumber: "" });
+  const [wageType, setWageType] = useState<"daily" | "monthly">("daily");
+  const [dailyWage, setDailyWage] = useState("");
+  const [monthlyWage, setMonthlyWage] = useState("");
+  const [overtimeRate, setOvertimeRate] = useState("");
   const [descriptor, setDescriptor] = useState<number[] | null>(null);
   const [cameraReady, setCameraReady] = useState(false);
   const [capturing, setCapturing] = useState(false);
@@ -71,6 +75,10 @@ export default function NewWorkerPage() {
         phoneNumber: form.phoneNumber.trim(),
         status: "active",
         faceDescriptor: JSON.stringify(descriptor),
+        wageType,
+        dailyWage: wageType === "daily" && dailyWage.trim() ? Number(dailyWage) : undefined,
+        monthlyWage: wageType === "monthly" && monthlyWage.trim() ? Number(monthlyWage) : undefined,
+        overtimeRate: overtimeRate.trim() ? Number(overtimeRate) : undefined,
       }));
     } catch (err: unknown) {
       setError((err as { message?: string }).message ?? "Failed to register worker.");
@@ -131,6 +139,35 @@ export default function NewWorkerPage() {
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700">Mobile number <span className="text-red-500">*</span></label>
             <input value={form.phoneNumber} onChange={e => set("phoneNumber", e.target.value)} placeholder="9876543210" inputMode="tel" className={INPUT} />
+          </div>
+        </section>
+
+        <section className="space-y-4 rounded-xl border border-slate-200 bg-white p-6">
+          <h2 className="font-semibold text-slate-900">Wage configuration</h2>
+          <p className="text-sm text-slate-500">Used by payroll to calculate this worker&apos;s wages. Can be left blank and set later.</p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">Wage type</label>
+              <select value={wageType} onChange={(e) => setWageType(e.target.value as "daily" | "monthly")} className={INPUT}>
+                <option value="daily">Daily</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+            {wageType === "daily" ? (
+              <div>
+                <label className="mb-1 block text-sm font-medium text-slate-700">Daily wage (₹)</label>
+                <input type="number" min="0" step="0.01" value={dailyWage} onChange={(e) => setDailyWage(e.target.value)} className={INPUT} />
+              </div>
+            ) : (
+              <div>
+                <label className="mb-1 block text-sm font-medium text-slate-700">Monthly wage (₹)</label>
+                <input type="number" min="0" step="0.01" value={monthlyWage} onChange={(e) => setMonthlyWage(e.target.value)} className={INPUT} />
+              </div>
+            )}
+            <div>
+              <label className="mb-1 block text-sm font-medium text-slate-700">Overtime rate (₹/hr)</label>
+              <input type="number" min="0" step="0.01" value={overtimeRate} onChange={(e) => setOvertimeRate(e.target.value)} className={INPUT} />
+            </div>
           </div>
         </section>
 

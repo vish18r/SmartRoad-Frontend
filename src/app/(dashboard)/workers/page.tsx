@@ -7,7 +7,10 @@ import { useWorkspace } from "@/components/workspace/workspace-context";
 import { Loading, ErrorState, EmptyState } from "@/components/common/states";
 import { FaceRegistration } from "@/components/common/face-registration";
 import { WorkerQr } from "@/components/common/worker-qr";
+import { shiftApi } from "@/lib/api/shift-api";
+import { ASSIGNMENT_STATUS_LABELS, ASSIGNMENT_STATUS_STYLES, formatAssignmentHistoryEntry, formatTime, formatWorkingMinutes } from "@/lib/shift-format";
 import type { WorkerResponse } from "@/types/worker";
+import type { ShiftAssignmentResponse } from "@/types/shift";
 import type { ApiError } from "@/types/api";
 
 const STATUS_COLORS: Record<string, string> = {
@@ -26,6 +29,11 @@ export default function WorkersPage() {
   const [search, setSearch] = useState("");
   const [faceFor, setFaceFor] = useState<WorkerResponse | null>(null);
   const [qrFor, setQrFor] = useState<WorkerResponse | null>(null);
+  const [shiftFor, setShiftFor] = useState<WorkerResponse | null>(null);
+  const [shiftCurrent, setShiftCurrent] = useState<ShiftAssignmentResponse | null>(null);
+  const [shiftHistory, setShiftHistory] = useState<ShiftAssignmentResponse[]>([]);
+  const [shiftLoading, setShiftLoading] = useState(false);
+  const [shiftError, setShiftError] = useState("");
 
   useEffect(() => {
     if (!organizationId) return;
@@ -35,6 +43,19 @@ export default function WorkersPage() {
       .catch((e: ApiError) => setError(e.message))
       .finally(() => setLoading(false));
   }, [organizationId]);
+
+  function openShiftHistory(worker: WorkerResponse) {
+    setShiftFor(worker);
+    setShiftLoading(true);
+    setShiftError("");
+    Promise.all([shiftApi.currentForWorker(worker.id), shiftApi.historyForWorker(worker.id)])
+      .then(([current, history]) => {
+        setShiftCurrent(current);
+        setShiftHistory(history);
+      })
+      .catch((e: ApiError) => setShiftError(e.message))
+      .finally(() => setShiftLoading(false));
+  }
 
   const filtered = workers.filter((w) => {
     if (!search) return true;
@@ -87,6 +108,43 @@ export default function WorkersPage() {
               />
             </div>
           )}
+          {shiftFor && (
+            <div className="mt-4 max-w-xl rounded-xl border border-slate-200 bg-white p-5">
+              <div className="flex items-start justify-between gap-4">
+                <h3 className="text-sm font-semibold text-slate-800">Shift history — {shiftFor.fullName}</h3>
+                <button type="button" onClick={() => setShiftFor(null)} className="text-sm text-slate-500 hover:text-slate-700">Close</button>
+              </div>
+              {shiftLoading ? <div className="mt-3"><Loading /></div> : shiftError ? <div className="mt-3"><ErrorState message={shiftError} /></div> : (
+                <>
+                  <div className="mt-3 rounded-lg bg-slate-50 p-3 text-sm">
+                    <p className="font-medium text-slate-700">Current shift</p>
+                    {shiftCurrent ? (
+                      <p className="mt-1 text-slate-600">
+                        {shiftCurrent.shiftName} ({formatTime(shiftCurrent.startTime)} – {formatTime(shiftCurrent.endTime)}, {formatWorkingMinutes(shiftCurrent.totalWorkingMinutes)})
+                        <span className={`ml-2 inline-block rounded-full px-2 py-0.5 text-xs font-medium ${ASSIGNMENT_STATUS_STYLES[shiftCurrent.status]}`}>
+                          {ASSIGNMENT_STATUS_LABELS[shiftCurrent.status]}
+                        </span>
+                      </p>
+                    ) : (
+                      <p className="mt-1 text-slate-500">No shift currently assigned.</p>
+                    )}
+                  </div>
+                  <div className="mt-3">
+                    <p className="text-sm font-medium text-slate-700">Assignment history</p>
+                    {shiftHistory.length === 0 ? (
+                      <p className="mt-1 text-sm text-slate-500">No shift assignment history yet.</p>
+                    ) : (
+                      <ul className="mt-1 space-y-1 text-sm text-slate-600">
+                        {shiftHistory.map((a) => (
+                          <li key={a.id}>{formatAssignmentHistoryEntry(a.effectiveFrom, a.effectiveTo, a.shiftName)}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          )}
           <div className="mt-4">
             {loading ? <Loading /> : error ? <ErrorState message={error} /> :
              filtered.length === 0 ? (
@@ -96,7 +154,7 @@ export default function WorkersPage() {
                 <table className="w-full text-sm">
                   <thead className="border-b border-slate-200 bg-slate-50">
                     <tr>
-                      {["Employee ID", "Name", "Phone", "Status", "Face", "QR", "Joining Date"].map(h => (
+                      {["Employee ID", "Name", "Phone", "Status", "Face", "QR", "Shift", "Joining Date"].map(h => (
                         <th key={h} className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{h}</th>
                       ))}
                     </tr>
@@ -122,6 +180,9 @@ export default function WorkersPage() {
                         </td>
                         <td className="px-4 py-3">
                           <button type="button" onClick={() => setQrFor(w)} className="text-xs font-medium text-orange-600 hover:underline">Show QR</button>
+                        </td>
+                        <td className="px-4 py-3">
+                          <button type="button" onClick={() => openShiftHistory(w)} className="text-xs font-medium text-orange-600 hover:underline">Shift history</button>
                         </td>
                         <td className="px-4 py-3 text-slate-600">{w.joiningDate ? new Date(w.joiningDate).toLocaleDateString("en-IN") : "—"}</td>
                       </tr>

@@ -13,6 +13,7 @@ export { materialApi } from "./material-api";
 export { contractApi } from "./contract-api";
 export { workerApi } from "./worker-api";
 export { businessProfileApi } from "./business-profile-api";
+export { payrollApi } from "./payroll-api";
 
 // Export types
 export type { ApiResponse, ApiError } from "@/types/api";

@@ -16,6 +16,9 @@ export type WorkerStatus =
 // Wire values come from AttendanceStatusEnum (@JsonValue, lower_snake_case).
 export type AttendanceStatus = 'present' | 'absent' | 'half_day' | 'leave';
 
+// Wire values come from WageTypeEnum (@JsonValue, lower_snake_case). Used for payroll.
+export type WageType = 'daily' | 'monthly';
+
 // Mirrors WorkerResponseDTO. The backend models a worker's job as a free-text
 // `role` and their posting as `assignedSiteId` (a project ID).
 export interface WorkerResponse extends BaseEntity {
@@ -43,6 +46,14 @@ export interface WorkerResponse extends BaseEntity {
   employeeId: string;
   fullName: string;
   faceStatus: WorkerFaceStatus;
+  // Wage configuration, used by payroll calculation. A worker created before this feature may
+  // have wageType default to 'daily' with no dailyWage/monthlyWage set yet.
+  wageType: WageType;
+  dailyWage?: number;
+  monthlyWage?: number;
+  overtimeRate?: number;
+  wageEffectiveDate?: string;
+  wageActive?: boolean;
 }
 
 // Mirrors WorkerRequestDTO, used for both create and update. organizationId and
@@ -72,6 +83,13 @@ export interface WorkerCreateRequest {
   experienceYears?: number;
   // 128-value face embedding as a JSON array string. Required when registering a new worker.
   faceDescriptor?: string;
+  // Wage configuration. Omit to leave the backend default (wageType 'daily', wageActive true).
+  wageType?: WageType;
+  dailyWage?: number;
+  monthlyWage?: number;
+  overtimeRate?: number;
+  wageEffectiveDate?: string;
+  wageActive?: boolean;
 }
 
 export type WorkerUpdateRequest = WorkerCreateRequest;

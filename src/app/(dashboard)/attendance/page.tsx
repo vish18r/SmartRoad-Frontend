@@ -92,7 +92,7 @@ export default function AttendancePage() {
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
             />
           </div>
           <div className="mt-4">
@@ -100,7 +100,7 @@ export default function AttendancePage() {
              workers.length === 0 ? (
               <EmptyState title="No workers" description="Add workers to the organization to track attendance." />
             ) : (
-              <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+              <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
                 <table className="w-full text-sm">
                   <thead className="border-b border-slate-200 bg-slate-50">
                     <tr>
@@ -113,7 +113,7 @@ export default function AttendancePage() {
                     {workers.map(w => {
                       const rec = attendanceMap[w.id];
                       return (
-                        <tr key={w.id} className="hover:bg-slate-50">
+                        <tr key={w.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                           <td className="px-4 py-3 font-semibold text-slate-900">{w.employeeId}</td>
                           <td className="px-4 py-3 font-medium text-slate-900">{w.fullName}</td>
                           <td className="px-4 py-3 text-slate-600">{w.role ?? "—"}</td>

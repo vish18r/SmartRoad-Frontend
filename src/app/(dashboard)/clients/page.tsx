@@ -24,18 +24,18 @@ export default function ClientsPage() {
   return (
     <>
       <div className="flex items-start justify-between gap-4">
-        <div>
+        <div className="animate-fade-in-up">
           <p className="text-sm font-medium text-orange-600">Smart Road</p>
           <h1 className="mt-1 text-2xl font-bold text-slate-900">Clients</h1>
           <p className="mt-1 text-sm text-slate-500">Manage client contacts, departments, GST details, projects, contracts, and payment history.</p>
         </div>
-        <button className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">+ New client</button>
+        <button className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">+ New client</button>
       </div>
       <div className="mt-6">
         {!organizationId ? <ErrorState message="Select an organization from the top bar." /> :
          loading ? <Loading /> : error ? <ErrorState message={error} /> :
          clients.length === 0 ? <EmptyState title="No clients yet" description="Add your first client to get started." /> : (
-          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
             <table className="w-full text-sm">
               <thead className="border-b border-slate-200 bg-slate-50">
                 <tr>
@@ -46,7 +46,7 @@ export default function ClientsPage() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {clients.map(c => (
-                  <tr key={c.id} className="hover:bg-slate-50">
+                  <tr key={c.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                     <td className="px-4 py-3 font-medium text-slate-900">{c.name}</td>
                     <td className="px-4 py-3 text-slate-600">{c.contactPerson ?? "—"}</td>
                     <td className="px-4 py-3 text-slate-600">{c.email ?? "—"}</td>

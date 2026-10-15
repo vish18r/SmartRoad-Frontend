@@ -91,7 +91,7 @@ export default function EditProjectPage() {
       <p className="mt-1 text-sm text-slate-500">Update project details below.</p>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-        <section className="rounded-xl border border-slate-200 bg-white p-6 space-y-4">
+        <section className="rounded-xl border border-slate-200 bg-white p-6 space-y-4 shadow-[var(--shadow-sm)]">
           <h2 className="font-semibold text-slate-900">Project details</h2>
 
           <div className="grid gap-4 sm:grid-cols-2">
@@ -100,7 +100,7 @@ export default function EditProjectPage() {
               <input
                 value={form.name}
                 onChange={e => set("name", e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
             <div>
@@ -108,7 +108,7 @@ export default function EditProjectPage() {
               <input
                 value={form.code}
                 onChange={e => set("code", e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function EditProjectPage() {
               value={form.description}
               onChange={e => set("description", e.target.value)}
               rows={3}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)] resize-none"
             />
           </div>
 
@@ -129,7 +129,7 @@ export default function EditProjectPage() {
               <input
                 value={form.location}
                 onChange={e => set("location", e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
             <div>
@@ -137,7 +137,7 @@ export default function EditProjectPage() {
               <select
                 value={form.status}
                 onChange={e => set("status", e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               >
                 {STATUSES.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
               </select>
@@ -145,7 +145,7 @@ export default function EditProjectPage() {
           </div>
         </section>
 
-        <section className="rounded-xl border border-slate-200 bg-white p-6 space-y-4">
+        <section className="rounded-xl border border-slate-200 bg-white p-6 space-y-4 shadow-[var(--shadow-sm)]">
           <h2 className="font-semibold text-slate-900">Budget & timeline</h2>
 
           <div>
@@ -155,7 +155,7 @@ export default function EditProjectPage() {
               min="0"
               value={form.budget}
               onChange={e => set("budget", e.target.value)}
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
             />
           </div>
 
@@ -166,7 +166,7 @@ export default function EditProjectPage() {
                 type="date"
                 value={form.startDate}
                 onChange={e => set("startDate", e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
             <div>
@@ -175,14 +175,14 @@ export default function EditProjectPage() {
                 type="date"
                 value={form.endDate}
                 onChange={e => set("endDate", e.target.value)}
-                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
           </div>
         </section>
 
         {saveError && (
-          <p className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{saveError}</p>
+          <p className="animate-fade-in-up rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{saveError}</p>
         )}
 
         <div className="flex items-center gap-3 pb-6">
@@ -193,7 +193,7 @@ export default function EditProjectPage() {
           >
             {saving ? "Saving..." : "Save changes"}
           </button>
-          <Link href={`/projects/${id}`} className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+          <Link href={`/projects/${id}`} className="rounded-lg border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
             Cancel
           </Link>
         </div>

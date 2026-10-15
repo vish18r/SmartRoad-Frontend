@@ -102,12 +102,12 @@ export default function ShiftsPage() {
   return (
     <>
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
+        <div className="animate-fade-in-up">
           <p className="text-sm font-medium text-orange-600">Smart Road</p>
           <h1 className="mt-1 text-2xl font-bold text-slate-900">Shifts</h1>
           <p className="mt-1 text-sm text-slate-500">Define and manage work shifts, timings, and worker assignments.</p>
         </div>
-        <Link href="/shifts/new" className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">
+        <Link href="/shifts/new" className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
           + Create Shift
         </Link>
       </div>
@@ -152,7 +152,7 @@ export default function ShiftsPage() {
             </div>
           </div>
 
-          {actionError && <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{actionError}</p>}
+          {actionError && <p className="animate-fade-in-up mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{actionError}</p>}
 
           <div className="mt-4">
             {loading ? <Loading /> : error ? <ErrorState message={error} /> :
@@ -160,7 +160,7 @@ export default function ShiftsPage() {
               <EmptyState
                 title="No shifts configured"
                 description="Create shift templates to start scheduling workers."
-                action={<Link href="/shifts/new" className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">Create Shift</Link>}
+                action={<Link href="/shifts/new" className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">Create Shift</Link>}
               />
             ) : (
               <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
@@ -174,7 +174,7 @@ export default function ShiftsPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {rows.map((s) => (
-                      <tr key={s.id} className="hover:bg-slate-50">
+                      <tr key={s.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                         <td className="px-4 py-3 font-semibold text-slate-900 whitespace-nowrap">{s.shiftCode}</td>
                         <td className="px-4 py-3 font-medium text-slate-900 whitespace-nowrap">{s.shiftName}</td>
                         <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{formatTime(s.startTime)}</td>

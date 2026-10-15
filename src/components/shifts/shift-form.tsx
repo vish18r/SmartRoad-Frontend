@@ -4,7 +4,7 @@ import { useState } from "react";
 import { previewWorkingMinutes, formatWorkingMinutes } from "@/lib/shift-format";
 import type { ShiftResponse, ShiftStatus } from "@/types/shift";
 
-const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500";
+const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]";
 
 export interface ShiftFormValues {
   shiftCode: string;
@@ -64,7 +64,7 @@ export function ShiftForm({
       }}
       className="space-y-6"
     >
-      <section className="rounded-xl border border-slate-200 bg-white p-5">
+      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
         <h2 className="text-sm font-semibold text-slate-800">Shift details</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="text-sm font-medium text-slate-700">
@@ -108,10 +108,10 @@ export function ShiftForm({
       </section>
 
       <div className="flex flex-wrap gap-3">
-        <button type="submit" disabled={submitting} className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50">
+        <button type="submit" disabled={submitting} className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)] disabled:opacity-50 disabled:hover:translate-y-0">
           {submitting ? "Saving..." : submitLabel}
         </button>
-        <button type="button" onClick={onCancel} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+        <button type="button" onClick={onCancel} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
           Cancel
         </button>
       </div>

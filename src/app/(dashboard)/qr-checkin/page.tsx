@@ -39,7 +39,7 @@ export default function QrCheckinPage() {
           <p className="mt-1 text-sm text-slate-500">Workers check in and out by face or QR code. The time is recorded by the server.</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Link href="/workers/new" className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">+ Register new worker</Link>
+          <Link href="/workers/new" className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">+ Register new worker</Link>
           <Link href="/workers" className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Worker QR codes</Link>
         </div>
       </div>
@@ -56,7 +56,7 @@ export default function QrCheckinPage() {
         <div className="mt-5 flex items-center gap-3">
           <label className="text-sm font-medium text-slate-700">Date</label>
           <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" />
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]" />
         </div>
       )}
 
@@ -70,7 +70,7 @@ export default function QrCheckinPage() {
         ) : days.length === 0 ? (
           <EmptyState title="No check-ins for this date" description="Attendance appears here once registered workers check in." />
         ) : (
-          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
             <table className="w-full text-sm">
               <thead className="border-b border-slate-200 bg-slate-50">
                 <tr>

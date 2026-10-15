@@ -20,7 +20,7 @@ import { formatINR } from "@/lib/currency";
 import type { AllowanceType, DeductionType, PayrollAllowance, PayrollDeduction, PayrollRequest, PayrollResponse } from "@/types/payroll";
 import type { ApiError } from "@/types/api";
 
-const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500";
+const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]";
 
 export default function PayrollDetailsPage() {
   const params = useParams<{ id: string }>();
@@ -75,7 +75,7 @@ export default function PayrollDetailsPage() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <div className="space-y-6">
-          <section className="rounded-xl border border-slate-200 bg-white p-5">
+          <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
             <h2 className="text-sm font-semibold text-slate-800">Worker</h2>
             <dl className="mt-3 grid grid-cols-2 gap-y-2 text-sm">
               <Info label="Employee ID" value={payroll.employeeId} />
@@ -87,7 +87,7 @@ export default function PayrollDetailsPage() {
             </dl>
           </section>
 
-          <section className="rounded-xl border border-slate-200 bg-white p-5">
+          <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
             <h2 className="text-sm font-semibold text-slate-800">Status timeline</h2>
             <dl className="mt-3 grid grid-cols-2 gap-y-2 text-sm">
               <Info label="Processed" value={formatDateTime(payroll.processedAt)} />
@@ -98,21 +98,21 @@ export default function PayrollDetailsPage() {
 
           {actionError && <p className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{actionError}</p>}
 
-          <section className="rounded-xl border border-slate-200 bg-white p-5">
+          <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
             <h2 className="text-sm font-semibold text-slate-800">Actions</h2>
             <div className="mt-3 flex flex-wrap gap-3">
               {payroll.status === "draft" && (
-                <button type="button" disabled={actionBusy} onClick={() => runAction(payrollApi.process)} className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50">
+                <button type="button" disabled={actionBusy} onClick={() => runAction(payrollApi.process)} className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)] disabled:opacity-50 disabled:hover:translate-y-0">
                   Process
                 </button>
               )}
               {payroll.status === "processed" && (
-                <button type="button" disabled={actionBusy} onClick={() => runAction(payrollApi.approve)} className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50">
+                <button type="button" disabled={actionBusy} onClick={() => runAction(payrollApi.approve)} className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)] disabled:opacity-50 disabled:hover:translate-y-0">
                   Approve
                 </button>
               )}
               {payroll.status === "approved" && (
-                <button type="button" disabled={actionBusy} onClick={() => runAction(payrollApi.markPaid)} className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50">
+                <button type="button" disabled={actionBusy} onClick={() => runAction(payrollApi.markPaid)} className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)] disabled:opacity-50 disabled:hover:translate-y-0">
                   Mark paid
                 </button>
               )}
@@ -200,7 +200,7 @@ function EditPayrollForm({ payroll, onSaved }: { payroll: PayrollResponse; onSav
   }
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5">
+    <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
       <h2 className="text-sm font-semibold text-slate-800">Edit draft</h2>
       <p className="mt-1 text-xs text-slate-400">Changes are recalculated by the backend when saved.</p>
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -227,10 +227,10 @@ function EditPayrollForm({ payroll, onSaved }: { payroll: PayrollResponse; onSav
         <LineItemsEditor title="Deductions" items={deductions} setItems={setDeductions} typeLabels={DEDUCTION_TYPE_LABELS} defaultType="salary_advance" />
       </div>
 
-      {error && <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+      {error && <p className="animate-fade-in-up mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
 
       <div className="mt-4">
-        <button type="button" disabled={saving} onClick={handleSave} className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50">
+        <button type="button" disabled={saving} onClick={handleSave} className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)] disabled:opacity-50 disabled:hover:translate-y-0">
           {saving ? "Saving..." : "Save changes"}
         </button>
       </div>

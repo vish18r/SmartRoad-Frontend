@@ -8,7 +8,7 @@ import { projectApi } from "@/lib/api/project-api";
 import { useWorkspace } from "@/components/workspace/workspace-context";
 import type { ProjectResponse } from "@/types/project";
 
-const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500";
+const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]";
 
 export default function NewContractPage() {
   const router = useRouter();
@@ -88,7 +88,7 @@ export default function NewContractPage() {
       )}
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-        <section className="space-y-4 rounded-xl border border-slate-200 bg-white p-6">
+        <section className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-[var(--shadow-sm)]">
           <h2 className="font-semibold text-slate-900">Contract details</h2>
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700">Project <span className="text-red-500">*</span></label>
@@ -105,7 +105,7 @@ export default function NewContractPage() {
           </div>
         </section>
 
-        <section className="space-y-4 rounded-xl border border-slate-200 bg-white p-6">
+        <section className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-[var(--shadow-sm)]">
           <h2 className="font-semibold text-slate-900">Value & timeline</h2>
           <div className="grid gap-4 sm:grid-cols-3">
             {field("Contract value (₹)", "contractValue", { type: "number", min: "0" })}
@@ -118,13 +118,13 @@ export default function NewContractPage() {
           </div>
         </section>
 
-        {error && <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
+        {error && <div className="animate-fade-in-up rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
 
         <div className="flex gap-3">
           <button type="submit" disabled={saving || !organizationId} className="rounded-lg bg-orange-600 px-5 py-2 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50">
             {saving ? "Creating..." : "Create contract"}
           </button>
-          <Link href="/contracts" className="rounded-lg border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</Link>
+          <Link href="/contracts" className="rounded-lg border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">Cancel</Link>
         </div>
       </form>
     </div>

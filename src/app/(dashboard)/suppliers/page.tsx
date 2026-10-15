@@ -37,14 +37,14 @@ export default function SuppliersPage() {
   return (
     <>
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
+        <div className="animate-fade-in-up">
           <p className="text-sm font-medium text-orange-600">Smart Road</p>
           <h1 className="mt-1 text-2xl font-bold text-slate-900">Suppliers</h1>
           <p className="mt-1 text-sm text-slate-500">
             Manage supplier contacts, GST details, purchase history, and outstanding payments.
           </p>
         </div>
-        <button className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">
+        <button className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
           + New supplier
         </button>
       </div>
@@ -74,7 +74,7 @@ export default function SuppliersPage() {
                 description="Add your first supplier to start managing vendor relationships."
               />
             ) : (
-              <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+              <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
                 <table className="w-full text-sm">
                   <thead className="border-b border-slate-200 bg-slate-50">
                     <tr>
@@ -90,7 +90,7 @@ export default function SuppliersPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {filtered.map((v) => (
-                      <tr key={v.id} className="hover:bg-slate-50">
+                      <tr key={v.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                         <td className="px-4 py-3 font-medium text-slate-900">{v.vendorName}</td>
                         <td className="px-4 py-3 text-slate-600">{v.contactPerson ?? "—"}</td>
                         <td className="px-4 py-3 text-slate-600">{v.phone ?? "—"}</td>

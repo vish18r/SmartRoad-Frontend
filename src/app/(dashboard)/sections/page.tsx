@@ -31,7 +31,7 @@ export default function SectionsPage() {
 
   return (
     <>
-      <div>
+      <div className="animate-fade-in-up">
         <p className="text-sm font-medium text-orange-600">Smart Road</p>
         <h1 className="mt-1 text-2xl font-bold text-slate-900">Road sections</h1>
         <p className="mt-1 text-sm text-slate-500">Divide projects into chainage sections and monitor planned, completed, and remaining length.</p>
@@ -44,7 +44,7 @@ export default function SectionsPage() {
             {roads.map(road => {
               const sections = sectionsMap[road.id] ?? [];
               return (
-                <div key={road.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+                <div key={road.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
                   <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-3">
                     <div>
                       <p className="font-semibold text-slate-900">{road.name}</p>
@@ -74,7 +74,7 @@ export default function SectionsPage() {
                       </thead>
                       <tbody className="divide-y divide-slate-50">
                         {sections.map(s => (
-                          <tr key={s.id} className="hover:bg-slate-50">
+                          <tr key={s.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                             <td className="px-4 py-2 text-slate-700">{s.startChainage ?? "—"}</td>
                             <td className="px-4 py-2 text-slate-700">{s.endChainage ?? "—"}</td>
                             <td className="px-4 py-2 text-slate-700">{s.lengthM}</td>

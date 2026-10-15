@@ -147,7 +147,7 @@ function VerifyOtpPage() {
 
         <button
           disabled={loading}
-          className="w-full rounded-lg bg-slate-900 py-2.5 text-white disabled:opacity-60"
+          className="w-full rounded-lg bg-[image:var(--gradient-primary)] py-2.5 text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)] disabled:opacity-60 disabled:hover:translate-y-0"
         >
           {loading ? "Verifying OTP…" : "Verify OTP"}
         </button>

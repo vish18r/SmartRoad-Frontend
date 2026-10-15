@@ -14,7 +14,7 @@ import type { WorkerResponse } from "@/types/worker";
 import type { AllowanceType, DeductionType, PayrollAllowance, PayrollDeduction, PayrollRequest, PayrollResponse } from "@/types/payroll";
 import type { ApiError } from "@/types/api";
 
-const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500";
+const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]";
 
 export default function NewPayrollPage() {
   const router = useRouter();
@@ -98,7 +98,7 @@ export default function NewPayrollPage() {
 
   return (
     <>
-      <div>
+      <div className="animate-fade-in-up">
         <p className="text-sm font-medium text-orange-600">Smart Road</p>
         <h1 className="mt-1 text-2xl font-bold text-slate-900">New payroll</h1>
         <p className="mt-1 text-sm text-slate-500">Calculate a worker&apos;s wages from their attendance, then save the payroll as a draft.</p>
@@ -109,7 +109,7 @@ export default function NewPayrollPage() {
       ) : (
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
           <div className="space-y-6">
-            <section className="rounded-xl border border-slate-200 bg-white p-5">
+            <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
               <h2 className="text-sm font-semibold text-slate-800">Worker &amp; period</h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 <label className="sm:col-span-2 text-sm font-medium text-slate-700">
@@ -162,10 +162,10 @@ export default function NewPayrollPage() {
               <button type="button" disabled={calculating} onClick={handleCalculate} className="rounded-lg border border-orange-600 px-4 py-2 text-sm font-semibold text-orange-600 hover:bg-orange-50 disabled:opacity-50">
                 {calculating ? "Calculating..." : "Calculate preview"}
               </button>
-              <button type="button" disabled={saving || !preview} onClick={handleSave} className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50">
+              <button type="button" disabled={saving || !preview} onClick={handleSave} className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)] disabled:opacity-50 disabled:hover:translate-y-0">
                 {saving ? "Saving..." : "Save as draft"}
               </button>
-              <Link href="/payroll" className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">Cancel</Link>
+              <Link href="/payroll" className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">Cancel</Link>
             </div>
           </div>
 

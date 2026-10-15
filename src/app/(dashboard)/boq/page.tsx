@@ -37,12 +37,12 @@ export default function BoqPage() {
   return (
     <>
       <div className="flex items-start justify-between gap-4">
-        <div>
+        <div className="animate-fade-in-up">
           <p className="text-sm font-medium text-orange-600">Smart Road</p>
           <h1 className="mt-1 text-2xl font-bold text-slate-900">BOQ</h1>
           <p className="mt-1 text-sm text-slate-500">Compare estimated and actual quantities, rates, amounts, and variance.</p>
         </div>
-        <button className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">+ New BOQ</button>
+        <button className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">+ New BOQ</button>
       </div>
       <div className="mt-6">
         {!projectId ? <ErrorState message="Select a project from the top bar to view its BOQ." /> :
@@ -54,7 +54,7 @@ export default function BoqPage() {
               const totalEstimated = items.reduce((s, i) => s + (i.estimatedAmount ?? 0), 0);
               const totalActual = items.reduce((s, i) => s + (i.actualAmount ?? 0), 0);
               return (
-                <div key={boq.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+                <div key={boq.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
                   <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-3">
                     <div>
                       <p className="font-semibold text-slate-900">{boq.name}</p>
@@ -76,7 +76,7 @@ export default function BoqPage() {
                       </thead>
                       <tbody className="divide-y divide-slate-50">
                         {items.map(item => (
-                          <tr key={item.id} className="hover:bg-slate-50">
+                          <tr key={item.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                             <td className="px-4 py-2 text-slate-600">{item.itemCode ?? "—"}</td>
                             <td className="px-4 py-2 text-slate-800">{item.description ?? "—"}</td>
                             <td className="px-4 py-2 text-slate-600">{item.unit ?? "—"}</td>

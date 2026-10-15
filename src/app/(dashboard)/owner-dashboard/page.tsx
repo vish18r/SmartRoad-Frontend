@@ -87,7 +87,7 @@ function PageHeading() {
 }
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
-	return <section className="rounded-xl border border-slate-200 bg-white p-6">
+	return <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-[var(--shadow-sm)]">
 		<h2 className="font-semibold text-slate-900">{title}</h2>
 		<dl className="mt-4 space-y-3">{children}</dl>
 	</section>;

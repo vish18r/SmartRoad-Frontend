@@ -17,7 +17,7 @@ function todayIso() {
 
 function Stat({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5">
+    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
       <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</p>
       <p className="mt-2 text-2xl font-bold text-slate-900">{value}</p>
       {hint && <p className="mt-1 text-xs text-slate-500">{hint}</p>}
@@ -141,7 +141,7 @@ export default function SiteDashboardPage() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {photos.recent.map((photo) => (
-              <figure key={photo.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+              <figure key={photo.id} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={photo.photoUrl} alt={photo.description || photo.photoType} className="h-36 w-full object-cover" />
                 <figcaption className="p-3">

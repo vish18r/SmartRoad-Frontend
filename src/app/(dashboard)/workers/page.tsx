@@ -78,7 +78,7 @@ export default function WorkersPage() {
           <h1 className="mt-1 text-2xl font-bold text-slate-900">Workers</h1>
           <p className="mt-1 text-sm text-slate-500">Manage workforce details and site assignments.</p>
         </div>
-        <Link href="/workers/new" className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">+ New worker</Link>
+        <Link href="/workers/new" className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">+ New worker</Link>
       </div>
 
       {!organizationId ? (
@@ -150,7 +150,7 @@ export default function WorkersPage() {
              filtered.length === 0 ? (
               <EmptyState title="No workers found" description="Add workers to start tracking your workforce." />
             ) : (
-              <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+              <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
                 <table className="w-full text-sm">
                   <thead className="border-b border-slate-200 bg-slate-50">
                     <tr>
@@ -161,7 +161,7 @@ export default function WorkersPage() {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {filtered.map(w => (
-                      <tr key={w.id} className="hover:bg-slate-50">
+                      <tr key={w.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                         <td className="px-4 py-3 font-semibold text-slate-900">{w.employeeId}</td>
                         <td className="px-4 py-3 font-medium text-slate-900">{w.fullName}</td>
                         <td className="px-4 py-3 text-slate-600">{w.phoneNumber ?? "—"}</td>

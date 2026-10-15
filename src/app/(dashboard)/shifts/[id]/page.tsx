@@ -19,7 +19,7 @@ import type { ShiftAssignmentResponse, ShiftResponse } from "@/types/shift";
 import type { WorkerResponse } from "@/types/worker";
 import type { ApiError } from "@/types/api";
 
-const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500";
+const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]";
 
 export default function ShiftDetailsPage() {
   const params = useParams<{ id: string }>();
@@ -136,7 +136,7 @@ export default function ShiftDetailsPage() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
-        <section className="rounded-xl border border-slate-200 bg-white p-5">
+        <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
           <h2 className="text-sm font-semibold text-slate-800">Shift details</h2>
           <dl className="mt-3 grid grid-cols-2 gap-y-2 text-sm">
             <Info label="Start time" value={formatTime(shift.startTime)} />
@@ -148,11 +148,11 @@ export default function ShiftDetailsPage() {
           </dl>
         </section>
 
-        <section className="rounded-xl border border-slate-200 bg-white p-5">
+        <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
           <h2 className="text-sm font-semibold text-slate-800">Actions</h2>
           {actionError && <p className="mt-3 rounded-lg bg-red-50 p-3 text-sm text-red-700">{actionError}</p>}
           <div className="mt-3 flex flex-wrap gap-3">
-            <Link href={`/shifts/${shift.id}/edit`} className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">
+            <Link href={`/shifts/${shift.id}/edit`} className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
               Edit
             </Link>
             <button type="button" disabled={actionBusy} onClick={() => setShowAssignForm((v) => !v)} className="rounded-lg border border-orange-600 px-4 py-2 text-sm font-semibold text-orange-600 hover:bg-orange-50 disabled:opacity-50">
@@ -189,10 +189,10 @@ export default function ShiftDetailsPage() {
                 </label>
               </div>
               <div className="flex gap-3">
-                <button type="submit" disabled={assigning} className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50">
+                <button type="submit" disabled={assigning} className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)] disabled:opacity-50 disabled:hover:translate-y-0">
                   {assigning ? "Assigning..." : "Assign"}
                 </button>
-                <button type="button" onClick={() => setShowAssignForm(false)} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50">
+                <button type="button" onClick={() => setShowAssignForm(false)} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                   Cancel
                 </button>
               </div>
@@ -207,7 +207,7 @@ export default function ShiftDetailsPage() {
           {assignments.length === 0 ? (
             <EmptyState title="No workers assigned" description="Assign a worker above to start scheduling them on this shift." />
           ) : (
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
               <table className="w-full text-left text-sm">
                 <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                   <tr>
@@ -218,7 +218,7 @@ export default function ShiftDetailsPage() {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {assignments.map((a) => (
-                    <tr key={a.id} className="hover:bg-slate-50">
+                    <tr key={a.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                       <td className="px-4 py-3 font-semibold text-slate-900">{a.employeeId ?? "—"}</td>
                       <td className="px-4 py-3 font-medium text-slate-900">{a.workerName ?? "—"}</td>
                       <td className="px-4 py-3 text-slate-600">{formatDate(a.effectiveFrom)}</td>

@@ -5,7 +5,7 @@
 // never computes a total on the client — every change is re-sent to the backend's calculate
 // endpoint before anything is saved.
 
-const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500";
+const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]";
 
 export interface LineItem<T extends string> {
   key: string;
@@ -40,7 +40,7 @@ export function LineItemsEditor<T extends string>({ title, items, setItems, type
   }
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-5">
+    <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-slate-800">{title}</h2>
         <button type="button" onClick={addRow} className="text-xs font-semibold text-orange-600 hover:underline">+ Add line</button>

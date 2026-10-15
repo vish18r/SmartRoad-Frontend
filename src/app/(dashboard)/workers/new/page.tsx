@@ -9,7 +9,7 @@ import { WorkerQr } from "@/components/common/worker-qr";
 import { captureVerifiedDescriptor } from "@/lib/face/face";
 import type { WorkerResponse } from "@/types/worker";
 
-const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500";
+const INPUT = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]";
 const MOBILE_RE = /^\+?[0-9]{10,}$/;
 
 export default function NewWorkerPage() {
@@ -105,7 +105,7 @@ export default function NewWorkerPage() {
           <p className="mt-4 text-sm text-green-800">{worker.firstName} can now check in with their face or this QR code.</p>
           <div className="mt-4"><WorkerQr employeeId={worker.employeeId} name={worker.fullName} /></div>
           <div className="mt-5 flex gap-3">
-            <button type="button" onClick={reset} className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">Register another worker</button>
+            <button type="button" onClick={reset} className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">Register another worker</button>
             <Link href="/workers" className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Back to workers</Link>
           </div>
         </div>
@@ -124,7 +124,7 @@ export default function NewWorkerPage() {
       )}
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-        <section className="space-y-4 rounded-xl border border-slate-200 bg-white p-6">
+        <section className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-[var(--shadow-sm)]">
           <h2 className="font-semibold text-slate-900">Worker details</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -142,7 +142,7 @@ export default function NewWorkerPage() {
           </div>
         </section>
 
-        <section className="space-y-4 rounded-xl border border-slate-200 bg-white p-6">
+        <section className="space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-[var(--shadow-sm)]">
           <h2 className="font-semibold text-slate-900">Wage configuration</h2>
           <p className="text-sm text-slate-500">Used by payroll to calculate this worker&apos;s wages. Can be left blank and set later.</p>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -183,13 +183,13 @@ export default function NewWorkerPage() {
           </div>
         </section>
 
-        {error && <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
+        {error && <div className="animate-fade-in-up rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
 
         <div className="flex gap-3">
           <button type="submit" disabled={saving || !organizationId} className="rounded-lg bg-orange-600 px-5 py-2 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50">
             {saving ? "Registering..." : "Register worker"}
           </button>
-          <Link href="/workers" className="rounded-lg border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</Link>
+          <Link href="/workers" className="rounded-lg border border-slate-300 px-5 py-2 text-sm font-medium text-slate-700 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">Cancel</Link>
         </div>
       </form>
     </div>

@@ -91,7 +91,7 @@ export default function BusinessProfilePage() {
         </div>
 
         {/* Business Information Section */}
-        <div className="bg-white rounded-lg shadow mb-6">
+        <div className="bg-white rounded-lg shadow-[var(--shadow-sm)] mb-6">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-xl font-semibold text-gray-900">Business Information</h2>
           </div>
@@ -111,7 +111,7 @@ export default function BusinessProfilePage() {
 
         {/* Address Section */}
         {(profile.addressStreet || profile.addressCity || profile.addressPinCode) && (
-          <div className="bg-white rounded-lg shadow mb-6">
+          <div className="bg-white rounded-lg shadow-[var(--shadow-sm)] mb-6">
             <div className="px-6 py-4 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">Address</h2>
             </div>
@@ -126,7 +126,7 @@ export default function BusinessProfilePage() {
         )}
 
         {/* Contacts Section */}
-        <div className="bg-white rounded-lg shadow mb-6">
+        <div className="bg-white rounded-lg shadow-[var(--shadow-sm)] mb-6">
           <div className="px-6 py-4 border-b border-gray-200">
             <h2 className="text-xl font-semibold text-gray-900">Contacts</h2>
           </div>

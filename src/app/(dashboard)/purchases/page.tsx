@@ -40,18 +40,18 @@ export default function PurchasesPage() {
   return (
     <>
       <div className="flex items-start justify-between gap-4">
-        <div>
+        <div className="animate-fade-in-up">
           <p className="text-sm font-medium text-orange-600">Smart Road</p>
           <h1 className="mt-1 text-2xl font-bold text-slate-900">Purchases</h1>
           <p className="mt-1 text-sm text-slate-500">Track supplier purchases, material quantities, invoices, taxes, and payment status.</p>
         </div>
-        <button className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">+ New order</button>
+        <button className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">+ New order</button>
       </div>
       <div className="mt-6">
         {!organizationId ? <ErrorState message="Select an organization from the top bar." /> :
          loading ? <Loading /> : error ? <ErrorState message={error} /> :
          orders.length === 0 ? <EmptyState title="No purchase orders yet" description="Create your first purchase order to get started." /> : (
-          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
             <table className="w-full text-sm">
               <thead className="border-b border-slate-200 bg-slate-50">
                 <tr>
@@ -62,7 +62,7 @@ export default function PurchasesPage() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {orders.map(o => (
-                  <tr key={o.id} className="hover:bg-slate-50">
+                  <tr key={o.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                     <td className="px-4 py-3 font-medium text-slate-900">{o.orderNumber ?? "—"}</td>
                     <td className="px-4 py-3 text-slate-600">{o.description ?? "—"}</td>
                     <td className="px-4 py-3 text-slate-900">{formatCurrency(o.totalAmount)}</td>

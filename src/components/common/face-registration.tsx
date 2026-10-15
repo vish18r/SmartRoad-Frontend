@@ -53,7 +53,7 @@ export function FaceRegistration({ worker, onDone, onCancel }: FaceRegistrationP
       <FaceCamera ref={camera} onReady={() => setReady(true)} />
       {message && <p role="status" className="text-sm text-slate-600">{message}</p>}
       <div className="flex gap-3">
-        <button type="button" onClick={capture} disabled={!ready || busy} className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700 disabled:opacity-50">
+        <button type="button" onClick={capture} disabled={!ready || busy} className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)] disabled:opacity-50 disabled:hover:translate-y-0">
           {busy ? "Working..." : "Capture face"}
         </button>
         {onCancel && <button type="button" onClick={onCancel} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Cancel</button>}

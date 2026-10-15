@@ -1,14 +1,251 @@
 @import "tailwindcss";
 
-:root { --background: #f4f7f5; --foreground: #15231e; --surface: #ffffff; --muted: #64746d; --line: #dbe5df; }
-:root.dark { --background: #101815; --foreground: #eef5f0; --surface: #17221d; --muted: #a6b7ae; --line: #304139; }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--background); color: var(--foreground); font-family: Georgia, "Times New Roman", serif; }
-button, input, select, textarea { font-family: inherit; }
-button, input { font: inherit; }
-.dark .bg-white { background-color: var(--surface); }
-.dark .bg-slate-50 { background-color: #111b17; }
-.dark .text-slate-900, .dark .text-slate-800, .dark .text-slate-700 { color: var(--foreground); }
-.dark .text-slate-600, .dark .text-slate-500 { color: var(--muted); }
-.dark .border-slate-200, .dark .border-slate-300 { border-color: var(--line); }
-@media print { aside, header, button { display: none !important; } main { padding: 0 !important; } }
+/* ---------------------------------------------------------------- */
+/* Design tokens                                                     */
+/* ---------------------------------------------------------------- */
+
+:root {
+  --background: #f4f7f5;
+  --foreground: #15231e;
+  --surface: #ffffff;
+  --surface-muted: #eef3f0;
+  --muted: #64746d;
+  --muted-strong: #44544d;
+  --line: #dbe5df;
+  --line-strong: #c3d1ca;
+  --inverse-surface: #15231e;
+  --inverse-foreground: #eef5f0;
+
+  /* Brand gradients — restrained, used only on hero/primary surfaces */
+  --gradient-primary: linear-gradient(135deg, #0f1b33 0%, #1d3a6e 55%, #2f5aa8 100%);
+  --gradient-accent: linear-gradient(135deg, #b91c2f 0%, #dc2f45 100%);
+  --gradient-hero: linear-gradient(160deg, #0c1830 0%, #16284d 45%, #1f3d73 100%);
+  --gradient-subtle-radial: radial-gradient(circle at 15% 20%, rgba(47, 90, 168, 0.12), transparent 55%),
+    radial-gradient(circle at 85% 0%, rgba(185, 28, 47, 0.08), transparent 45%);
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(15, 27, 51, 0.06), 0 1px 1px rgba(15, 27, 51, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 27, 51, 0.08), 0 2px 4px rgba(15, 27, 51, 0.05);
+  --shadow-lg: 0 16px 32px rgba(15, 27, 51, 0.12), 0 4px 10px rgba(15, 27, 51, 0.06);
+
+  /* Shape */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-fast: 150ms var(--ease-standard);
+  --transition-base: 220ms var(--ease-standard);
+  --transition-slow: 480ms var(--ease-standard);
+
+  --focus-ring: 0 0 0 3px rgba(47, 90, 168, 0.35);
+}
+
+:root.dark {
+  --background: #101815;
+  --foreground: #eef5f0;
+  --surface: #17221d;
+  --surface-muted: #111b17;
+  --muted: #a6b7ae;
+  --muted-strong: #c6d4cd;
+  --line: #304139;
+  --line-strong: #425148;
+  --inverse-surface: #eef5f0;
+  --inverse-foreground: #15231e;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 16px 32px rgba(0, 0, 0, 0.45), 0 4px 10px rgba(0, 0, 0, 0.25);
+
+  --focus-ring: 0 0 0 3px rgba(104, 150, 220, 0.4);
+}
+
+/* ---------------------------------------------------------------- */
+/* Base elements                                                     */
+/* ---------------------------------------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+/* ---------------------------------------------------------------- */
+/* Dark-mode token mapping for hardcoded Tailwind utility classes     */
+/* Keeps existing component markup (bg-white, text-slate-900, etc.)  */
+/* theme-aware without requiring dark: variants on every usage.      */
+/* ---------------------------------------------------------------- */
+
+.dark .bg-white,
+.dark .bg-slate-50 {
+  background-color: var(--surface);
+}
+
+.dark .bg-slate-100 {
+  background-color: var(--surface-muted);
+}
+
+.dark .bg-slate-800,
+.dark .bg-slate-900,
+.dark .bg-slate-950 {
+  background-color: var(--inverse-surface);
+  color: var(--inverse-foreground);
+}
+
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-slate-700 {
+  color: var(--foreground);
+}
+
+.dark .text-slate-600,
+.dark .text-slate-500,
+.dark .text-slate-400,
+.dark .text-slate-300,
+.dark .text-gray-700,
+.dark .text-gray-500 {
+  color: var(--muted);
+}
+
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-300,
+.dark .border-slate-600,
+.dark .border-gray-300 {
+  border-color: var(--line);
+}
+
+/* ---------------------------------------------------------------- */
+/* Animation infrastructure                                           */
+/* ---------------------------------------------------------------- */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up var(--transition-slow) both;
+}
+
+/* Apply with an inline style="--stagger: N" to offset each item's entrance. */
+.animate-stagger {
+  animation: fade-in-up var(--transition-slow) both;
+  animation-delay: calc(var(--stagger, 0) * 60ms);
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 10s ease-in-out infinite;
+}
+
+.animate-skeleton {
+  background-image: linear-gradient(90deg, var(--surface-muted) 25%, var(--line) 37%, var(--surface-muted) 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.animate-dialog-in {
+  animation: dialog-in var(--transition-base) both;
+}
+
+.animate-overlay-in {
+  animation: overlay-in var(--transition-fast) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-stagger,
+  .animate-gradient,
+  .animate-skeleton,
+  .animate-dialog-in,
+  .animate-overlay-in {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Print overrides                                                   */
+/* ---------------------------------------------------------------- */
+
+@media print {
+  aside,
+  header,
+  button {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+}

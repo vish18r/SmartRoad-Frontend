@@ -54,10 +54,10 @@ export const FormInput = React.forwardRef<HTMLInputElement, FormInputProps>(
       <FormField label={label} error={error} helperText={helperText} required={required}>
         <input
           ref={ref}
-          className={`w-full px-3 py-2 border rounded-md shadow-sm text-sm ${
+          className={`w-full rounded-md border px-3 py-2 text-sm shadow-[var(--shadow-sm)] transition-[box-shadow,border-color] duration-[var(--transition-fast)] ${
             error
-              ? 'border-red-500 focus:outline-none focus:ring-red-500'
-              : 'border-gray-300 focus:outline-none focus:ring-blue-500'
+              ? 'border-red-500 focus:outline-none focus:shadow-[0_0_0_3px_rgba(220,38,38,0.25)]'
+              : 'border-gray-300 focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]'
           } ${className}`}
           {...props}
         />
@@ -87,10 +87,10 @@ export const FormTextarea = React.forwardRef<
       <FormField label={label} error={error} helperText={helperText} required={required}>
         <textarea
           ref={ref}
-          className={`w-full px-3 py-2 border rounded-md shadow-sm text-sm ${
+          className={`w-full rounded-md border px-3 py-2 text-sm shadow-[var(--shadow-sm)] transition-[box-shadow,border-color] duration-[var(--transition-fast)] ${
             error
-              ? 'border-red-500 focus:outline-none focus:ring-red-500'
-              : 'border-gray-300 focus:outline-none focus:ring-blue-500'
+              ? 'border-red-500 focus:outline-none focus:shadow-[0_0_0_3px_rgba(220,38,38,0.25)]'
+              : 'border-gray-300 focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]'
           } ${className}`}
           {...props}
         />
@@ -131,10 +131,10 @@ export const FormSelect = React.forwardRef<
       <FormField label={label} error={error} helperText={helperText} required={required}>
         <select
           ref={ref}
-          className={`w-full px-3 py-2 border rounded-md shadow-sm text-sm ${
+          className={`w-full rounded-md border px-3 py-2 text-sm shadow-[var(--shadow-sm)] transition-[box-shadow,border-color] duration-[var(--transition-fast)] ${
             error
-              ? 'border-red-500 focus:outline-none focus:ring-red-500'
-              : 'border-gray-300 focus:outline-none focus:ring-blue-500'
+              ? 'border-red-500 focus:outline-none focus:shadow-[0_0_0_3px_rgba(220,38,38,0.25)]'
+              : 'border-gray-300 focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]'
           } ${className}`}
           {...props}
         >
@@ -270,7 +270,7 @@ export function FormSubmitButton({
     <button
       type="submit"
       disabled={loading || disabled}
-      className={`w-full px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+      className={`w-full rounded-md bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-medium text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 ${className}`}
       {...props}
     >
       {loading ? loadingText : children}

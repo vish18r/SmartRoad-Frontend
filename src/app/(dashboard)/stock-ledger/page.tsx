@@ -66,7 +66,7 @@ export default function StockLedgerPage() {
 
   return (
     <>
-      <div>
+      <div className="animate-fade-in-up">
         <p className="text-sm font-medium text-orange-600">Smart Road</p>
         <h1 className="mt-1 text-2xl font-bold text-slate-900">Material stock ledger</h1>
         <p className="mt-1 text-sm text-slate-500">
@@ -94,7 +94,7 @@ export default function StockLedgerPage() {
                 <select
                   value={selectedMaterialId}
                   onChange={(e) => setSelectedMaterialId(e.target.value)}
-                  className="rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
                 >
                   {materials.map((m) => (
                     <option key={m.id} value={m.id}>
@@ -114,7 +114,7 @@ export default function StockLedgerPage() {
                       description="No stock movements recorded for this material yet."
                     />
                   ) : (
-                    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+                    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
                       <table className="w-full text-sm">
                         <thead className="border-b border-slate-200 bg-slate-50">
                           <tr>
@@ -130,7 +130,7 @@ export default function StockLedgerPage() {
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                           {ledger.map((entry) => (
-                            <tr key={entry.id} className="hover:bg-slate-50">
+                            <tr key={entry.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                               <td className="px-4 py-3 text-slate-600">
                                 {entry.transactionDate
                                   ? new Date(entry.transactionDate).toLocaleDateString("en-IN")

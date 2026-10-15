@@ -2,7 +2,7 @@
 export default function SitesPage() {
   return (
     <>
-      <div>
+      <div className="animate-fade-in-up">
         <p className="text-sm font-medium text-orange-600">Smart Road</p>
         <h1 className="mt-1 text-2xl font-bold text-slate-900">Sites</h1>
         <p className="mt-1 text-sm text-slate-500">Sites correspond to your active projects. Manage them from the Projects module.</p>

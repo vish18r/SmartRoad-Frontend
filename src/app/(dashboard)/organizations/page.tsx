@@ -120,7 +120,7 @@ export default function OrganizationsPage() {
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               placeholder="e.g., Site Dash Test Org"
             />
           </div>
@@ -131,7 +131,7 @@ export default function OrganizationsPage() {
                 type="text"
                 value={formData.legalName || ""}
                 onChange={(e) => setFormData({ ...formData, legalName: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
             <div>
@@ -140,7 +140,7 @@ export default function OrganizationsPage() {
                 type="text"
                 value={formData.gstNumber || ""}
                 onChange={(e) => setFormData({ ...formData, gstNumber: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
           </div>
@@ -151,7 +151,7 @@ export default function OrganizationsPage() {
                 type="email"
                 value={formData.email || ""}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
             <div>
@@ -160,7 +160,7 @@ export default function OrganizationsPage() {
                 type="tel"
                 value={formData.phoneNumber || ""}
                 onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
           </div>
@@ -170,7 +170,7 @@ export default function OrganizationsPage() {
               type="text"
               value={formData.address || ""}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+              className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
             />
           </div>
           <div className="flex gap-2">
@@ -236,7 +236,7 @@ export default function OrganizationsPage() {
                 required
                 value={editData.name}
                 onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
             <div className="mb-4">
@@ -245,7 +245,7 @@ export default function OrganizationsPage() {
                 type="text"
                 value={editData.legalName || ""}
                 onChange={(e) => setEditData({ ...editData, legalName: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
             <div className="mb-4">
@@ -254,7 +254,7 @@ export default function OrganizationsPage() {
                 type="text"
                 value={editData.gstNumber || ""}
                 onChange={(e) => setEditData({ ...editData, gstNumber: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
             <div className="mb-4">
@@ -263,7 +263,7 @@ export default function OrganizationsPage() {
                 type="email"
                 value={editData.email || ""}
                 onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
             <div className="mb-4">
@@ -272,7 +272,7 @@ export default function OrganizationsPage() {
                 type="tel"
                 value={editData.phoneNumber || ""}
                 onChange={(e) => setEditData({ ...editData, phoneNumber: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
             <div className="mb-4">
@@ -281,7 +281,7 @@ export default function OrganizationsPage() {
                 type="text"
                 value={editData.address || ""}
                 onChange={(e) => setEditData({ ...editData, address: e.target.value })}
-                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none"
+                className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
               />
             </div>
             <div className="flex gap-2">

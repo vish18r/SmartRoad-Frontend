@@ -47,13 +47,13 @@ export default function ContractsPage() {
           <h1 className="mt-1 text-2xl font-bold text-slate-900">Contracts</h1>
           <p className="mt-1 text-sm text-slate-500">Manage contract terms, work orders, values, dates, payment terms, and documents.</p>
         </div>
-        <Link href="/contracts/new" className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">+ New contract</Link>
+        <Link href="/contracts/new" className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">+ New contract</Link>
       </div>
       <div className="mt-6">
         {!organizationId ? <ErrorState message="Select an organization from the top bar." /> :
          loading ? <Loading /> : error ? <ErrorState message={error} /> :
          contracts.length === 0 ? <EmptyState title="No contracts yet" description="Add your first contract to get started." /> : (
-          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-[var(--shadow-sm)]">
             <table className="w-full text-sm">
               <thead className="border-b border-slate-200 bg-slate-50">
                 <tr>
@@ -64,7 +64,7 @@ export default function ContractsPage() {
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {contracts.map(c => (
-                  <tr key={c.id} className="hover:bg-slate-50">
+                  <tr key={c.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                     <td className="px-4 py-3 font-medium text-slate-900">{c.contractNumber}</td>
                     <td className="px-4 py-3 text-slate-600">{c.workOrderNumber ?? "—"}</td>
                     <td className="px-4 py-3 text-slate-900">{formatCurrency(c.contractValue)}</td>

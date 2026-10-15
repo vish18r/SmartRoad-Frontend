@@ -36,7 +36,7 @@ export default function ConcretePage() {
 
   return (
     <>
-      <div>
+      <div className="animate-fade-in-up">
         <p className="text-sm font-medium text-orange-600">Smart Road</p>
         <h1 className="mt-1 text-2xl font-bold text-slate-900">Concrete work</h1>
         <p className="mt-1 text-sm text-slate-500">Track concrete sections, quantities, materials, labour, machines, supervisors, and completion.</p>
@@ -51,15 +51,15 @@ export default function ConcretePage() {
       ) : (
         <>
           <section className="mt-6 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-xl border border-slate-200 bg-white p-5">
+            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Total length</p>
               <p className="mt-1 text-2xl font-bold text-slate-900">{totalLength.toFixed(2)} m</p>
             </div>
-            <div className="rounded-xl border border-slate-200 bg-white p-5">
+            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Completed</p>
               <p className="mt-1 text-2xl font-bold text-green-700">{completedLength.toFixed(2)} m</p>
             </div>
-            <div className="rounded-xl border border-slate-200 bg-white p-5">
+            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Completion</p>
               <p className="mt-1 text-2xl font-bold text-slate-900">{completionPct}%</p>
               <div className="mt-2 h-2 w-full rounded-full bg-slate-100">
@@ -92,7 +92,7 @@ export default function ConcretePage() {
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                           {(sections[road.id] ?? []).map(sec => (
-                            <tr key={sec.id} className="hover:bg-slate-50">
+                            <tr key={sec.id} className="transition-colors duration-[var(--transition-fast)] hover:bg-slate-50">
                               <td className="px-4 py-3 font-medium text-slate-900">{sec.name ?? `Section`}</td>
                               <td className="px-4 py-3 text-slate-600">{sec.chainageFrom ?? "—"}</td>
                               <td className="px-4 py-3 text-slate-600">{sec.chainageTo ?? "—"}</td>

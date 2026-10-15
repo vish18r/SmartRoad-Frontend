@@ -112,13 +112,13 @@ export default function SiteDiaryPage() {
   return (
     <>
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
+        <div className="animate-fade-in-up">
           <p className="text-sm font-medium text-orange-600">Smart Road</p>
           <h1 className="mt-1 text-2xl font-bold text-slate-900">Daily site diary</h1>
           <p className="mt-1 text-sm text-slate-500">Capture daily weather, people, machines, materials, completed work, issues, safety, photos, and notes.</p>
         </div>
         {selectedProjectId && (
-          <button onClick={openNewEntry} className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-700">
+          <button onClick={openNewEntry} className="rounded-lg bg-[image:var(--gradient-primary)] px-4 py-2 text-sm font-semibold text-white shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-[var(--transition-fast)] hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
             + New entry
           </button>
         )}
@@ -153,7 +153,7 @@ export default function SiteDiaryPage() {
             ) : (
               <div className="space-y-4">
                 {entries.map((entry) => (
-                  <div key={entry.id} className="rounded-xl border border-slate-200 bg-white p-5">
+                  <div key={entry.id} className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]">
                     <div className="flex items-center justify-between gap-4">
                       <div>
                         <p className="font-semibold text-slate-900">{formatDate(entry.diaryDate)}</p>
@@ -219,7 +219,7 @@ export default function SiteDiaryPage() {
                     required
                     value={form.diaryDate}
                     onChange={(e) => setForm((f) => ({ ...f, diaryDate: e.target.value }))}
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
                   />
                 </div>
                 <div>
@@ -227,7 +227,7 @@ export default function SiteDiaryPage() {
                   <select
                     value={form.weather}
                     onChange={(e) => setForm((f) => ({ ...f, weather: e.target.value }))}
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
                   >
                     <option value="">Select...</option>
                     {WEATHER_OPTIONS.map((w) => <option key={w}>{w}</option>)}
@@ -242,7 +242,7 @@ export default function SiteDiaryPage() {
                   step="0.1"
                   value={form.temperatureCelsius ?? ""}
                   onChange={(e) => setForm((f) => ({ ...f, temperatureCelsius: e.target.value ? Number(e.target.value) : undefined }))}
-                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)]"
                   placeholder="e.g. 32.5"
                 />
               </div>
@@ -256,7 +256,7 @@ export default function SiteDiaryPage() {
                     rows={3}
                     value={form[field] ?? ""}
                     onChange={(e) => setForm((f) => ({ ...f, [field]: e.target.value }))}
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 resize-none"
+                    className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:outline-none focus:border-transparent focus:shadow-[var(--focus-ring)] resize-none"
                   />
                 </div>
               ))}

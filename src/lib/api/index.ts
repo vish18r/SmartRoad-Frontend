@@ -14,6 +14,9 @@ export { contractApi } from "./contract-api";
 export { workerApi } from "./worker-api";
 export { businessProfileApi } from "./business-profile-api";
 export { payrollApi } from "./payroll-api";
+export { machineApi } from "./machine-api";
+export { vehicleApi } from "./vehicle-api";
+export { resourcePlanApi } from "./resource-plan-api";
 
 // Export types
 export type { ApiResponse, ApiError } from "@/types/api";

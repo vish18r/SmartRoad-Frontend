@@ -72,10 +72,34 @@ async function request<T>(method: HttpMethod, path: string, options: RequestOpti
   }
 }
 
+// Multipart upload: bypasses `request()` because that always JSON-encodes the body.
+// The browser must set the Content-Type (with its multipart boundary) itself, so it
+// is deliberately left off here.
+async function requestForm<T>(path: string, formData: FormData): Promise<T> {
+  const baseUrl = getBaseUrl();
+  if (!baseUrl) throw { status: 0, message: "NEXT_PUBLIC_API_BASE_URL is not configured." } satisfies ApiError;
+  try {
+    const token = tokenStorage.getAccessToken();
+    const response = await fetch(`${baseUrl}${path}`, {
+      method: "POST",
+      credentials: "include",
+      headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      body: formData,
+    });
+    const payload = await readPayload(response);
+    if (!response.ok) throw toError(response.status, payload);
+    return payload as T;
+  } catch (error) {
+    if (typeof error === "object" && error !== null && "status" in error) throw error;
+    throw { status: 0, message: "Unable to reach the server. Please check your connection." } satisfies ApiError;
+  }
+}
+
 export const apiClient = {
   get: <T>(path: string, options?: RequestOptions) => request<T>("GET", path, options),
   post: <T>(path: string, body?: unknown, options?: RequestOptions) => request<T>("POST", path, { ...options, body }),
   put: <T>(path: string, body?: unknown, options?: RequestOptions) => request<T>("PUT", path, { ...options, body }),
   patch: <T>(path: string, body?: unknown, options?: RequestOptions) => request<T>("PATCH", path, { ...options, body }),
   delete: <T>(path: string, options?: RequestOptions) => request<T>("DELETE", path, options),
+  postForm: <T>(path: string, formData: FormData) => requestForm<T>(path, formData),
 };

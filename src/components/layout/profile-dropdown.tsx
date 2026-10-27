@@ -3,8 +3,11 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ChevronDown, LogOut, Settings, Trash2, UserRound } from "lucide-react";
 import { auth } from "@/lib/auth/auth";
+import { authApi } from "@/lib/api/auth-api";
 import type { User } from "@/types/auth";
+import type { ApiError } from "@/types/api";
 import type { OrganizationResponse } from "@/types/organization";
 
 interface ProfileDropdownProps {
@@ -12,41 +15,14 @@ interface ProfileDropdownProps {
   organization?: OrganizationResponse | null;
 }
 
-function ChevronIcon({ open }: { open: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 20 20"
-      fill="none"
-      className={`h-4 w-4 flex-shrink-0 transition-transform duration-[var(--transition-fast)] ${open ? "rotate-180" : ""}`}
-      aria-hidden="true"
-    >
-      <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function MenuIcon({ path }: { path: string }) {
-  return (
-    <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4 flex-shrink-0 text-slate-500" aria-hidden="true">
-      <path d={path} stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-const ICON_PATHS = {
-  profile: "M10 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm0 1.5c-3 0-6 1.5-6 4.5v.5h12v-.5c0-3-3-4.5-6-4.5Z",
-  settings:
-    "M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM3.5 10a6.4 6.4 0 0 1 .06-.86l-1.4-1.1 1.4-2.42 1.65.56c.3-.26.63-.48.98-.66l.25-1.72h2.8l.25 1.72c.35.18.68.4.98.66l1.65-.56 1.4 2.42-1.4 1.1c.04.28.06.57.06.86s-.02.58-.06.86l1.4 1.1-1.4 2.42-1.65-.56c-.3.26-.63.48-.98.66l-.25 1.72h-2.8l-.25-1.72a5.4 5.4 0 0 1-.98-.66l-1.65.56-1.4-2.42 1.4-1.1A6.4 6.4 0 0 1 3.5 10Z",
-  bell: "M10 2.5c-2 0-3.5 1.6-3.5 3.6v2c0 .7-.3 1.4-.8 1.9l-.7.7c-.5.5-.1 1.3.6 1.3h8.8c.7 0 1.1-.8.6-1.3l-.7-.7a2.7 2.7 0 0 1-.8-1.9v-2c0-2-1.5-3.6-3.5-3.6ZM8.3 15a1.7 1.7 0 0 0 3.4 0",
-  logout: "M8 3.5H5a1.5 1.5 0 0 0-1.5 1.5v10A1.5 1.5 0 0 0 5 16.5h3M13 13l3.5-3-3.5-3M16 10H7.5",
-  trash: "M4 6h12M8 6V4.5A1.5 1.5 0 0 1 9.5 3h1A1.5 1.5 0 0 1 12 4.5V6M6 6l.6 9a1.5 1.5 0 0 0 1.5 1.4h3.8a1.5 1.5 0 0 0 1.5-1.4l.6-9",
-};
-
 export function ProfileDropdown({ user, organization }: ProfileDropdownProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [deletingAccount, setDeletingAccount] = useState(false);
+  const [deletePasswordError, setDeletePasswordError] = useState("");
   const [deleteNotice, setDeleteNotice] = useState("");
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -69,6 +45,8 @@ export function ProfileDropdown({ user, organization }: ProfileDropdownProps) {
   useEffect(() => {
     if (!open) {
       setConfirmingDelete(false);
+      setDeletePassword("");
+      setDeletePasswordError("");
       setDeleteNotice("");
     }
   }, [open]);
@@ -87,10 +65,28 @@ export function ProfileDropdown({ user, organization }: ProfileDropdownProps) {
     }
   };
 
-  const requestDeleteAccount = () => {
-    setDeleteNotice(
-      "Account deletion isn't self-serve yet — contact support and we'll take care of it for you.",
-    );
+  const confirmDeleteAccount = async () => {
+    setDeletingAccount(true);
+    setDeletePasswordError("");
+    try {
+      await authApi.deleteAccount(deletePassword);
+    } catch (error) {
+      const message = (error as ApiError)?.message || "";
+      setDeletePasswordError(
+        /incorrect|invalid credentials/i.test(message) || !message ? "Incorrect password." : message,
+      );
+      setDeletingAccount(false);
+      return;
+    }
+    setDeletingAccount(false);
+    setConfirmingDelete(false);
+    setDeletePassword("");
+    setDeleteNotice("Your account has been deleted. Signing you out...");
+    try {
+      await auth.logout();
+    } finally {
+      router.replace("/login");
+    }
   };
 
   return (
@@ -107,16 +103,19 @@ export function ProfileDropdown({ user, organization }: ProfileDropdownProps) {
           {initials}
         </span>
         <span className="hidden max-w-[8rem] truncate font-medium text-slate-700 sm:inline">{name}</span>
-        <ChevronIcon open={open} />
+        <ChevronDown
+          aria-hidden="true"
+          className={`h-4 w-4 flex-shrink-0 text-slate-500 transition-transform duration-[var(--transition-fast)] motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
+        />
       </button>
 
       {open && (
         <div
           role="menu"
-          className="animate-dialog-in absolute right-0 top-[calc(100%+0.5rem)] z-40 w-72 origin-top-right rounded-xl border border-slate-200 bg-white p-4 shadow-[var(--shadow-lg)]"
-          style={{ fontFamily: "-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" }}
+          aria-label="Account menu"
+          className="animate-dialog-in absolute right-0 top-[calc(100%+0.5rem)] z-40 w-[min(22rem,calc(100vw-2rem))] origin-top-right overflow-hidden rounded-b-2xl rounded-t-sm border border-slate-200 bg-white shadow-[var(--shadow-lg)] motion-reduce:animate-none"
         >
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-3 px-5 pt-4">
             <span className="grid h-11 w-11 flex-shrink-0 place-items-center rounded-full bg-[image:var(--gradient-primary)] text-sm font-bold text-white shadow-[var(--shadow-sm)]">
               {initials}
             </span>
@@ -133,7 +132,7 @@ export function ProfileDropdown({ user, organization }: ProfileDropdownProps) {
           </div>
 
           {organization && (
-            <div className="mt-3 border-t border-slate-100 pt-3">
+            <div className="mx-5 mt-3 border-t border-slate-100 pt-3">
               <p className="text-sm font-semibold text-slate-800">{organization.name}</p>
               {organization.address && (
                 <p className="mt-0.5 text-xs leading-snug text-slate-500">{organization.address}</p>
@@ -141,63 +140,52 @@ export function ProfileDropdown({ user, organization }: ProfileDropdownProps) {
             </div>
           )}
 
-          <div className="my-3 border-t border-dashed border-slate-200" />
+          <div className="mx-5 my-3 border-t border-dashed border-slate-300" />
 
-          <nav className="flex flex-col gap-0.5" aria-label="Account menu">
+          <nav className="flex flex-col py-1" aria-label="Account menu">
             <Link
               href="/profile"
               role="menuitem"
               onClick={() => setOpen(false)}
-              className="flex items-center justify-between rounded-lg px-2 py-2 text-sm font-medium text-slate-700 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50 hover:text-blue-900"
+              className="group flex items-center justify-between gap-4 px-5 py-3.5 text-lg font-medium text-slate-900 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50 focus-visible:bg-slate-50 focus-visible:outline-none"
             >
-              View profile
-              <MenuIcon path={ICON_PATHS.profile} />
+              View Profile
+              <UserRound aria-hidden="true" strokeWidth={1.75} className="h-6 w-6 flex-shrink-0 text-blue-700" />
             </Link>
             <Link
               href="/settings"
               role="menuitem"
               onClick={() => setOpen(false)}
-              className="flex items-center justify-between rounded-lg px-2 py-2 text-sm font-medium text-slate-700 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50 hover:text-blue-900"
+              className="group flex items-center justify-between gap-4 px-5 py-3.5 text-lg font-medium text-slate-900 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50 focus-visible:bg-slate-50 focus-visible:outline-none"
             >
-              Account settings
-              <MenuIcon path={ICON_PATHS.settings} />
+              Settings
+              <Settings aria-hidden="true" strokeWidth={1.75} className="h-6 w-6 flex-shrink-0 text-blue-700" />
             </Link>
-            <Link
-              href="/notifications"
-              role="menuitem"
-              onClick={() => setOpen(false)}
-              className="flex items-center justify-between rounded-lg px-2 py-2 text-sm font-medium text-slate-700 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50 hover:text-blue-900"
-            >
-              Notifications
-              <MenuIcon path={ICON_PATHS.bell} />
-            </Link>
-
-            <div className="my-2 border-t border-slate-100" />
 
             <button
               type="button"
               role="menuitem"
               onClick={logout}
               disabled={signingOut}
-              className="flex items-center justify-between rounded-lg px-2 py-2 text-left text-sm font-medium text-slate-700 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50 hover:text-blue-900 disabled:opacity-50"
+              className="flex items-center justify-between gap-4 px-5 py-3.5 text-left text-lg font-medium text-slate-900 transition-colors duration-[var(--transition-fast)] hover:bg-slate-50 focus-visible:bg-slate-50 focus-visible:outline-none disabled:opacity-50"
             >
               {signingOut ? "Signing out..." : "Log out"}
-              <MenuIcon path={ICON_PATHS.logout} />
+              <LogOut aria-hidden="true" strokeWidth={1.75} className="h-6 w-6 flex-shrink-0 text-blue-700" />
             </button>
 
             <button
               type="button"
               role="menuitem"
               onClick={() => setConfirmingDelete(true)}
-              className="flex items-center justify-between rounded-lg px-2 py-2 text-left text-sm font-medium text-red-600 transition-colors duration-[var(--transition-fast)] hover:bg-red-50"
+              className="flex items-center justify-between gap-4 px-5 py-3.5 pb-4 text-left text-lg font-medium text-red-600 transition-colors duration-[var(--transition-fast)] hover:bg-red-50 focus-visible:bg-red-50 focus-visible:outline-none"
             >
-              Delete account
-              <MenuIcon path={ICON_PATHS.trash} />
+              Delete Account
+              <Trash2 aria-hidden="true" strokeWidth={1.75} className="h-6 w-6 flex-shrink-0 text-red-600" />
             </button>
           </nav>
 
           {deleteNotice && (
-            <p className="animate-fade-in-up mt-2 rounded-lg bg-slate-50 px-2 py-2 text-xs text-slate-600">
+            <p className="animate-fade-in-up mx-5 mb-4 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-600 motion-reduce:animate-none">
               {deleteNotice}
             </p>
           )}
@@ -223,6 +211,26 @@ export function ProfileDropdown({ user, organization }: ProfileDropdownProps) {
               This permanently removes your access to SMART ROAD, including your profile, attendance history, and
               payroll records. This action cannot be undone.
             </p>
+
+            <label htmlFor="delete-account-password" className="mt-4 block text-xs font-medium text-slate-700">
+              Confirm your password to continue
+            </label>
+            <input
+              id="delete-account-password"
+              type="password"
+              autoComplete="current-password"
+              value={deletePassword}
+              onChange={(event) => {
+                setDeletePassword(event.target.value);
+                setDeletePasswordError("");
+              }}
+              placeholder="Password"
+              className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none transition-[box-shadow,border-color] duration-[var(--transition-fast)] focus:border-transparent focus:shadow-[var(--focus-ring)]"
+            />
+            {deletePasswordError && (
+              <p className="animate-fade-in-up mt-1.5 text-xs text-red-600">{deletePasswordError}</p>
+            )}
+
             <div className="mt-5 flex justify-end gap-2">
               <button
                 type="button"
@@ -233,13 +241,11 @@ export function ProfileDropdown({ user, organization }: ProfileDropdownProps) {
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setConfirmingDelete(false);
-                  requestDeleteAccount();
-                }}
-                className="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors duration-[var(--transition-fast)] hover:bg-red-700"
+                onClick={confirmDeleteAccount}
+                disabled={!deletePassword || deletingAccount}
+                className="rounded-lg bg-red-600 px-3 py-2 text-sm font-medium text-white transition-colors duration-[var(--transition-fast)] hover:bg-red-700 disabled:opacity-50"
               >
-                Yes, delete my account
+                {deletingAccount ? "Deleting..." : "Yes, delete my account"}
               </button>
             </div>
           </div>

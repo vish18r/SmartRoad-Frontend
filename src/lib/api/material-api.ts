@@ -86,6 +86,20 @@ export const materialApi = {
       },
     }),
 
+  // Adds received stock to a material's ledger for a project.
+  receiveStock: (
+    materialId: string,
+    payload: { projectId: string; quantity: number; unitRate?: number; referenceNumber?: string; notes?: string }
+  ): Promise<unknown> =>
+    apiClient.post<unknown>(`/materials/${materialId}/receive`, payload),
+
+  // Records consumed stock against a material's ledger for a project.
+  consumeStock: (
+    materialId: string,
+    payload: { projectId: string; quantity: number; referenceNumber?: string; notes?: string }
+  ): Promise<unknown> =>
+    apiClient.post<unknown>(`/materials/${materialId}/consume`, payload),
+
   // Legacy method names for backward compatibility
   getList: (projectId?: string): Promise<MaterialResponse[]> =>
     materialApi.list(projectId, 1, 1000),

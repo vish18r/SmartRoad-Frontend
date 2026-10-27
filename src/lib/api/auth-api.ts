@@ -9,6 +9,7 @@ export const authApi = {
   forgotPassword: (body: ForgotPasswordRequest) => apiClient.post<void>("/auth/forgot-password", body),
   resetPassword: (body: ResetPasswordRequest) => apiClient.post<void>("/auth/reset-password", body),
   changePassword: (body: ChangePasswordRequest) => apiClient.post<void>("/auth/change-password", body),
+  deleteAccount: (password: string) => apiClient.post<void>("/auth/delete-account", { password }),
   logout: (refreshToken: string) => apiClient.post<void>("/auth/logout", { refreshToken }),
   logoutAll: () => apiClient.post<void>("/auth/logout-all"),
   getCurrentUser: () => apiClient.get<User>("/auth/me"),

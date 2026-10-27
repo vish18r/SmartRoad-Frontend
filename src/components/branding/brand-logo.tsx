@@ -36,9 +36,8 @@ export function BrandLogo({
   showProductBadge = false,
   className = "",
 }: BrandLogoProps) {
-  const markBg = darkSurface ? "bg-white" : "bg-slate-900";
-  const markFg = darkSurface ? "text-slate-900" : "text-white";
-  const dashColor = darkSurface ? "#0f172a" : "#ffffff";
+  const markFg = "text-white";
+  const dashColor = "#ffffff";
   const wordColor = darkSurface ? "text-white" : "text-slate-900";
   const subColor = darkSurface ? "text-slate-400" : "text-slate-500";
 
@@ -49,7 +48,8 @@ export function BrandLogo({
       className={`inline-flex items-center gap-3 ${className}`}
     >
       <span
-        className={`grid shrink-0 place-items-center rounded-lg ${markBg} ${compact ? "h-9 w-9" : "h-12 w-12"}`}
+        className={`relative grid shrink-0 place-items-center rounded-xl shadow-[var(--shadow-sm)] ${compact ? "h-9 w-9" : "h-12 w-12"}`}
+        style={{ backgroundImage: "var(--gradient-primary)" }}
         aria-hidden="true"
       >
         <svg viewBox="0 0 40 28" className={`${markFg} ${compact ? "h-5 w-5" : "h-7 w-7"}`}>
@@ -57,16 +57,25 @@ export function BrandLogo({
           <polygon points="9,7 12.5,2 16,7" fill="currentColor" />
           <rect x="9" y="7" width="7" height="17" fill="currentColor" />
           <rect x="17" y="14" width="6" height="10" fill="currentColor" />
-          <path d="M1 25 Q14 20 24 17 T39 12" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" />
+          <path d="M1 25 Q14 20 24 17 T39 12" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.9" />
           <circle cx="24" cy="17" r="1" fill={dashColor} />
           <circle cx="30.5" cy="14.3" r="1" fill={dashColor} />
-          <circle cx="36.5" cy="12.2" r="1" fill={dashColor} />
+          <circle cx="39" cy="12" r="2.6" fill="url(#brand-mark-accent)" />
+          <defs>
+            <linearGradient id="brand-mark-accent" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#dc2f45" />
+              <stop offset="100%" stopColor="#b91c2f" />
+            </linearGradient>
+          </defs>
         </svg>
       </span>
       <span className="flex min-w-0 flex-col leading-tight">
         <span className="flex items-baseline gap-2">
-          <span className={`truncate font-extrabold tracking-tight ${wordColor} ${compact ? "text-sm" : "text-lg sm:text-xl"}`}>
-            {BRAND_NAME}
+          <span className={`truncate font-extrabold tracking-tight ${compact ? "text-sm" : "text-lg sm:text-xl"}`}>
+            <span className={wordColor}>BHAGYAVANTI </span>
+            <span className="bg-clip-text text-transparent" style={{ backgroundImage: "var(--gradient-accent)" }}>
+              INFRA
+            </span>
           </span>
           {showProductBadge && (
             <span className="hidden shrink-0 items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-red-600 sm:inline-flex">
@@ -79,8 +88,11 @@ export function BrandLogo({
           )}
         </span>
         {showBusinessType && (
-          <span className={`truncate text-[10px] font-semibold uppercase tracking-[0.12em] ${subColor}`}>
-            {BRAND_BUSINESS_TYPE}
+          <span className="mt-0.5 flex items-center gap-1.5">
+            <span className="h-[2px] w-3 rounded-full" style={{ backgroundImage: "var(--gradient-accent)" }} />
+            <span className={`truncate text-[10px] font-semibold uppercase tracking-[0.08em] ${subColor}`}>
+              {BRAND_BUSINESS_TYPE}
+            </span>
           </span>
         )}
         {showTagline && (

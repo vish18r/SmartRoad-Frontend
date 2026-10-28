@@ -11,6 +11,7 @@ import { projectApi } from "@/lib/api/project-api";
 import type { OrganizationResponse } from "@/types/organization";
 import type { ProjectResponse } from "@/types/project";
 import { ProfileDropdown } from "@/components/layout/profile-dropdown";
+import { Bell } from "lucide-react";
 
 export function Header() {
   const router = useRouter();
@@ -104,10 +105,7 @@ export function Header() {
           aria-label="Open notifications"
           className="relative rounded-lg border border-slate-200 px-3 py-2 text-sm transition-colors duration-[var(--transition-fast)] hover:bg-slate-50"
         >
-          Bell
-          <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-[image:var(--gradient-accent)] px-1 text-[10px] text-white">
-            0
-          </span>
+          <Bell className="h-5 w-5 text-slate-500" strokeWidth={2} />
         </button>
         <select
           aria-label="Theme"

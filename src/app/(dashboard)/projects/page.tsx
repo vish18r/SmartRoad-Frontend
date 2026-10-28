@@ -132,12 +132,13 @@ export default function ProjectsPage() {
 
       {/* Filters */}
       <Form onSubmit={handleSearch} className="bg-white rounded-lg shadow-sm p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="flex flex-wrap items-end gap-4">
           <FormInput
             label="Search"
             placeholder="Search by name, code, or location"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full max-w-xl"
           />
           <FormSelect
             label="Status"
@@ -151,9 +152,11 @@ export default function ProjectsPage() {
             ]}
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
+            className="min-w-[180px] flex-1"
           />
-          <div className="flex items-end">
-            <FormSubmitButton className="w-full">Search</FormSubmitButton>
+          <div className="flex flex-col">
+            <label className="mb-1 block text-sm font-medium text-transparent select-none">Search</label>
+            <FormSubmitButton className="!w-auto border border-transparent px-6 py-2">Search</FormSubmitButton>
           </div>
         </div>
       </Form>

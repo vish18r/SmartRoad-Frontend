@@ -15,7 +15,7 @@ const actionByRole: Record<string, Array<[string, string]>> = {
   SUPERVISOR: [["Mark attendance", "/attendance"], ["Daily progress", "/daily-progress"], ["Site diary", "/site-diary"], ["Report issue", "/issues"]],
   WORKER: [["My attendance", "/attendance"], ["My work queue", "/work-queue"], ["My payments", "/payments"], ["Current shift", "/shifts"]],
 };
-const attentionItems = ["Project health", "Budget control", "Payment radar", "Approvals", "Document expiry"];
+const attentionItems = ["Budget control", "Payment radar", "Approvals", "Document expiry"];
 function getGreeting(hour: number) { return hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening"; }
 function PendingCard({ title, detail }: { title: string; detail: string }) { return <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-[var(--shadow-sm)] transition-shadow duration-[var(--transition-base)] hover:shadow-[var(--shadow-md)]"><div className="flex items-start justify-between gap-3"><h3 className="font-semibold text-slate-900">{title}</h3><span className="rounded-full bg-amber-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-amber-800">API required</span></div><p className="mt-5 text-2xl font-bold text-slate-400">Unavailable</p><p className="mt-1 text-xs text-slate-500">{detail}</p></article>; }
 function SectionTitle({ title, link }: { title: string; link?: [string, string] }) { return <div className="mb-4 flex flex-wrap items-center justify-between gap-3"><h2 className="text-lg font-bold tracking-tight text-slate-900">{title}</h2>{link && <Link href={link[1]} className="text-sm font-semibold text-orange-600 hover:text-orange-700">{link[0]}</Link>}</div>; }

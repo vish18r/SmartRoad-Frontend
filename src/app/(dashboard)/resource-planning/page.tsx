@@ -798,7 +798,7 @@ export default function ResourcePlanningPage() {
             <option value="CANCELLED">Cancelled</option>
           </select>
         </div>
-        <div className="flex-1 min-w-[180px]">
+        <div className="w-64">
           <label className="mb-1 block text-xs font-medium text-slate-600">Search</label>
           <input className={inputClass} placeholder="Search plan name or ID..." value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>

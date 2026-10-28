@@ -17,6 +17,7 @@ export { payrollApi } from "./payroll-api";
 export { machineApi } from "./machine-api";
 export { vehicleApi } from "./vehicle-api";
 export { resourcePlanApi } from "./resource-plan-api";
+export { maintenanceApi } from "./maintenance-api";
 
 // Export types
 export type { ApiResponse, ApiError } from "@/types/api";
